@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>CPA — Avaliação Institucional Automatizada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema de Avaliação Institucional para IES. Automatize a Comissão Própria de Avaliação: questionários, coleta, relatórios MEC. Obrigatório por lei.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --ink-2: #1a2a42;
+      --navy: #14345c;
+      --navy-soft: #3d5a85;
+      --paper: #f3efe4;
+      --paper-2: #eae4d4;
+      --paper-3: #ded5bf;
+      --line: #d5cbb2;
+      --muted: #6b6450;
+      --bordo: #7a2a2a;
+      --bordo-2: #9a3838;
+      --ocre: #c08a2a;
+      --oliva: #5a6b3a;
+      --white: #ffffff;
+      --danger: #9a3838;
+      --success: #5a6b3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter Tight', 'Segoe UI', system-ui, sans-serif;
+      color: var(--ink);
+      background: #f7f7f5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 4vw, 5rem);
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 0.75rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-links a {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .navbar-links a:hover { color: var(--navy); }
+    .btn-nav-login {
+      background: var(--navy);
+      color: var(--paper);
+      border: none;
+      padding: 0.5rem 1.5rem;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .btn-nav-login:hover { background: var(--ink-2); }
+
+    /* Mobile menu */
+    .navbar-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      color: var(--navy);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    @media (max-width: 767px) {
+      .navbar-toggle { display: block; }
+      .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--paper);
+        border-bottom: 1px solid var(--line);
+        padding: 1rem clamp(1.25rem, 4vw, 5rem);
+        gap: 1rem;
+      }
+      .navbar-links.open { display: flex; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--paper);
+      padding: 6rem 0 5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-inner {
+      max-width: 720px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bordo);
+      border-left: 3px solid var(--bordo);
+      padding: 0.3rem 0.75rem;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+    .hero h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      line-height: 1.12;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--bordo);
+    }
+    .hero-subtitle {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-subtitle strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn-primary-navy {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--paper);
+      border: none;
+      padding: 0.85rem 2rem;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary-navy:hover { background: var(--ink-2); }
+    .btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: var(--navy);
+      border: 1px solid var(--line);
+      padding: 0.85rem 2rem;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--navy); }
+
+    /* ── Social Proof ── */
+    .social-proof {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      padding: 2.5rem 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      line-height: 1.4;
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    }
+
+    /* ── Section headings ── */
+    .section-heading {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .section-subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+    }
+
+    /* ── Pain Section ── */
+    .pain-section {
+      padding: 5rem 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .pain-card {
+      background: var(--white);
+      padding: 2rem;
+      position: relative;
+    }
+    .pain-card:first-child {
+      background: #faf5f5;
+      border-left: 3px solid var(--bordo);
+    }
+    .pain-card:first-child .pain-label { color: var(--bordo); }
+    .pain-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .pain-card h5 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .pain-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    @media (max-width: 600px) {
+      .pain-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Features ── */
+    .features-section {
+      padding: 5rem 0;
+      background: #f7f7f5;
+      border-bottom: 1px solid var(--line);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2rem 1.75rem;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: var(--navy-soft); }
+    .feature-numeral {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--navy-soft);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h5 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    @media (max-width: 900px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── How it Works ── */
+    .how-section {
+      padding: 5rem 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(12.5% + 1rem);
+      right: calc(12.5% + 1rem);
+      height: 1px;
+      background: var(--line);
+    }
+    .step-card { text-align: center; position: relative; }
+    .step-numeral {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      display: block;
+      position: relative;
+      z-index: 1;
+      line-height: 1;
+    }
+    .step-numeral::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--white);
+      z-index: -1;
+    }
+    .step-card h5 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .step-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    @media (max-width: 767px) {
+      .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; }
+      .steps-grid::before { display: none; }
+    }
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Law Banner ── */
+    .law-banner {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4rem 0;
+      border-bottom: 3px solid var(--bordo);
+    }
+    .law-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .law-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bordo-2);
+      margin-bottom: 1.5rem;
+    }
+    .law-banner h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.3;
+      color: var(--paper);
+      margin-bottom: 1rem;
+    }
+    .law-banner p {
+      font-size: 0.95rem;
+      color: var(--paper-3);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .law-citation {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--navy-soft);
+      border: 1px solid rgba(61, 90, 133, 0.3);
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2px;
+    }
+
+    /* ── CTA Final ── */
+    .cta-section {
+      padding: 5rem 0;
+      background: #f7f7f5;
+      border-bottom: 1px solid var(--line);
+    }
+    .cta-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .cta-inner h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.25;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .cta-inner p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .cta-inner .btn-primary-navy {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+    }
+
+    /* ── Footer ── */
+    .app-footer {
+      background: var(--navy);
+      color: rgba(243, 239, 228, 0.6);
+      padding: 3rem 0;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .footer-name {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(243, 239, 228, 0.45);
+      letter-spacing: 0.02em;
+      margin-top: 0.25rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: rgba(243, 239, 228, 0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--paper); }
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(243, 239, 228, 0.35);
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(243, 239, 228, 0.1);
+    }
+
+    @media (max-width: 600px) {
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    /* ── Responsive hero ── */
+    @media (max-width: 767px) {
+      .hero { padding: 3.5rem 0 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="landing.html">
+      <svg viewBox="0 0 180 50" width="150" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="22" fill="none" stroke="#14345c" stroke-width="1.5"/>
+        <circle cx="25" cy="25" r="18" fill="none" stroke="#14345c" stroke-width="0.5" stroke-dasharray="1 2.5"/>
+        <text x="25" y="32" font-family="Instrument Serif, Georgia, serif" font-size="14" font-weight="400" text-anchor="middle" fill="#14345c" letter-spacing="-0.5">CPA</text>
+        <line x1="17" y1="36" x2="33" y2="36" stroke="#7a2a2a" stroke-width="0.8"/>
+        <text x="60" y="28" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="22" fill="#14345c" letter-spacing="-0.5">CPA<tspan fill="#7a2a2a" font-style="normal">.</tspan></text>
+        <text x="62" y="42" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="2.5" fill="#6b6450">AVALIAÇÃO INSTITUCIONAL</text>
+      </svg>
+    </a>
+    <button class="navbar-toggle" onclick="document.getElementById('nav-menu').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="navbar-links" id="nav-menu">
+      <li><a href="landing.html">Início</a></li>
+      <li><a href="#features">Funcionalidades</a></li>
+      <li><a href="planos.html">Planos</a></li>
+      <li><a href="#como-funciona">Como Funciona</a></li>
+      <li><a href="login.html" class="btn-nav-login">Entrar</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-badge">Obrigatório por lei &mdash; Lei 10.861/2004 (SINAES)</div>
+      <h1>Avaliação Institucional<br><em>sem planilha, sem dor de cabeça</em></h1>
+      <p class="hero-subtitle">Automatize todo o ciclo da <strong>Comissão Própria de Avaliação</strong>: questionários alinhados às 10 dimensões do SINAES, coleta com lembretes, dashboards em tempo real e geração automática do relatório para o MEC.</p>
+      <div class="hero-buttons">
+        <a href="planos.html" class="btn-primary-navy">Comece agora &mdash; 14 dias grátis</a>
+        <a href="#como-funciona" class="btn-ghost">Veja como funciona</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Social Proof -->
+<section class="social-proof">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">2.600+</div>
+        <div class="stat-label">IES no Brasil precisam de CPA</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Dimensões SINAES cobertas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5&times;</div>
+        <div class="stat-label">Mais rápido que o processo manual</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Alinhado ao formato MEC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pain Points -->
+<section class="pain-section">
+  <div class="container">
+    <h2 class="section-heading">O que acontece sem um sistema de CPA?</h2>
+    <p class="section-subtitle">A maioria das IES ainda faz assim...</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-label">Problema principal</div>
+        <h5>Risco na avaliação do MEC</h5>
+        <p>Relatório incompleto ou mal formatado perde pontos na avaliação in loco. A nota da instituição cai.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-label">Ferramentas</div>
+        <h5>Google Forms + Word + Excel</h5>
+        <p>Questionários fragmentados, dados espalhados em planilhas que ninguém consolida.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-label">Participação</div>
+        <h5>Baixa adesão dos respondentes</h5>
+        <p>Sem lembretes automáticos, menos de 20% dos alunos respondem a avaliação.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-label">Tempo</div>
+        <h5>Semanas no relatório</h5>
+        <p>Compilar dados manualmente, criar gráficos no Excel, formatar no Word. Semanas de trabalho.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="container">
+    <h2 class="section-heading">Tudo que sua CPA precisa em um só lugar</h2>
+    <p class="section-subtitle">Do questionário ao relatório final, automatizado e alinhado ao SINAES</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-numeral">I</span>
+        <h5>Questionários por Dimensão</h5>
+        <p>Templates prontos alinhados aos 5 eixos e 10 dimensões do SINAES. Personalize ou use direto.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-numeral">II</span>
+        <h5>Coleta Multi-segmento</h5>
+        <p>Questionários específicos para discentes, docentes, TAEs e gestores. Tudo anônimo.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-numeral">III</span>
+        <h5>Lembretes Automáticos</h5>
+        <p>Disparo de e-mails por segmento com acompanhamento de taxa de participação em tempo real.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-numeral">IV</span>
+        <h5>Dashboard em Tempo Real</h5>
+        <p>Acompanhe participação, médias por dimensão e comparativo histórico entre ciclos.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-numeral">V</span>
+        <h5>Relatório RAI Automático</h5>
+        <p>Gera o Relatório de Autoavaliação no formato esperado pelo MEC, com gráficos e análises.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-numeral">VI</span>
+        <h5>Pôsteres e Infográficos</h5>
+        <p>Gere materiais prontos para imprimir e fixar nos murais da instituição. Com QR code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Law Banner -->
+<section class="law-banner">
+  <div class="container">
+    <div class="law-inner">
+      <div class="law-eyebrow">Legislação Federal</div>
+      <h2>Obrigatório pelo MEC</h2>
+      <p>A Lei 10.861/2004 (SINAES) determina que toda Instituição de Ensino Superior no Brasil deve ter uma Comissão Própria de Avaliação e produzir o Relatório de Autoavaliação Institucional. Não é opcional &mdash; é compliance.</p>
+      <div class="law-citation">LEI 10.861/2004 &middot; SINAES &middot; MEC/INEP</div>
+    </div>
+  </div>
+</section>
+
+<!-- How it Works -->
+<section class="how-section" id="como-funciona">
+  <div class="container">
+    <h2 class="section-heading" style="text-align: center; margin-bottom: 3rem;">Como funciona</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-numeral">I</span>
+        <h5>Crie o Ciclo</h5>
+        <p>Defina o período de avaliação e selecione os questionários por segmento.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-numeral">II</span>
+        <h5>Publique e Colete</h5>
+        <p>Gere links por segmento. O sistema envia lembretes e mostra participação ao vivo.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-numeral">III</span>
+        <h5>Analise Resultados</h5>
+        <p>Dashboards com médias por dimensão, gráficos radar e comparativo histórico.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-numeral">IV</span>
+        <h5>Gere o Relatório</h5>
+        <p>RAI em PDF no formato MEC. Pronto para submissão no e-MEC.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Final -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner">
+      <h2>Sua próxima avaliação do MEC está mais perto do que parece</h2>
+      <p>Não espere a véspera da visita in loco. Comece agora e tenha dados de qualidade quando o avaliador chegar.</p>
+      <a href="planos.html" class="btn-primary-navy">Comece grátis &mdash; 14 dias sem compromisso</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="app-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <svg viewBox="0 0 180 50" width="130" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="25" cy="25" r="22" fill="none" stroke="#f3efe4" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="25" cy="25" r="18" fill="none" stroke="#f3efe4" stroke-width="0.5" stroke-dasharray="1 2.5" opacity="0.3"/>
+          <text x="25" y="32" font-family="Instrument Serif, Georgia, serif" font-size="14" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-0.5">CPA</text>
+          <line x1="17" y1="36" x2="33" y2="36" stroke="#9a3838" stroke-width="0.8"/>
+          <text x="60" y="28" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="22" fill="#f3efe4" letter-spacing="-0.5">CPA<tspan fill="#9a3838" font-style="normal">.</tspan></text>
+          <text x="62" y="42" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="2.5" fill="rgba(243,239,228,0.4)">AVALIAÇÃO INSTITUCIONAL</text>
+        </svg>
+        <span class="footer-name">Comissão Própria de Avaliação</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Termos de Uso</a></li>
+        <li><a href="#">Privacidade</a></li>
+        <li><a href="planos.html">Planos</a></li>
+        <li><a href="#">Suporte</a></li>
+      </ul>
+    </div>
+    <div class="footer-copy">&copy; 2026 CPA &mdash; Avaliação Institucional Automatizada</div>
+  </div>
+</footer>
+
+</body>
+</html>

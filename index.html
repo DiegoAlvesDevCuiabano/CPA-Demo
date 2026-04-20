@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPA Digital — Design v3</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --navy: #14345c;
+      --paper: #f3efe4;
+      --line: #d5cbb2;
+      --bordo: #7a2a2a;
+      --muted: #6b6450;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter Tight', sans-serif;
+      background: #f7f7f5;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 720px;
+      width: 100%;
+      padding: 3rem 2rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .brand svg { flex-shrink: 0; }
+    .brand-info h1 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.8rem;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+    .brand-info h1 span { color: var(--bordo); font-style: normal; }
+    .brand-info p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 2.5rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .card:hover {
+      border-color: var(--navy);
+      box-shadow: 0 2px 12px rgba(14,26,43,0.08);
+      transform: translateY(-1px);
+    }
+    .card .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .card .name {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .card .desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .card.highlight { border-left: 3px solid var(--bordo); }
+
+    .footer {
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .container { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">
+      <svg viewBox="0 0 200 200" width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="#14345c" stroke-width="3"/>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#14345c" stroke-width="0.8" stroke-dasharray="2 4"/>
+        <text x="100" y="118" font-family="Instrument Serif, Georgia, serif" font-size="58" font-weight="400" text-anchor="middle" fill="#14345c" letter-spacing="-1">CPA</text>
+        <line x1="72" y1="130" x2="128" y2="130" stroke="#7a2a2a" stroke-width="1.4"/>
+        <circle cx="100" cy="142" r="1.8" fill="#7a2a2a"/>
+      </svg>
+      <div class="brand-info">
+        <h1>CPA<span>.</span></h1>
+        <p>Comissão Própria de Avaliação</p>
+      </div>
+    </div>
+
+    <div class="subtitle">Páginas públicas</div>
+    <div class="grid">
+      <a href="landing.html" class="card highlight">
+        <span class="label">Marketing</span>
+        <span class="name">Landing Page</span>
+        <span class="desc">Página de conversão para IES</span>
+      </a>
+      <a href="planos.html" class="card">
+        <span class="label">Marketing</span>
+        <span class="name">Planos e Preços</span>
+        <span class="desc">Institucional · Universidade · Enterprise</span>
+      </a>
+      <a href="login.html" class="card">
+        <span class="label">Autenticação</span>
+        <span class="name">Login</span>
+        <span class="desc">Acesso dos membros CPA</span>
+      </a>
+      <a href="responder.html" class="card">
+        <span class="label">Respondente</span>
+        <span class="name">Questionário Público</span>
+        <span class="desc">Likert · NPS · Texto livre</span>
+      </a>
+    </div>
+
+    <div class="subtitle">Área logada — Comissão Própria de Avaliação</div>
+    <div class="grid">
+      <a href="dashboard-cpa.html" class="card highlight">
+        <span class="label">App</span>
+        <span class="name">Dashboard</span>
+        <span class="desc">KPIs · Radar SINAES · Dimensões</span>
+      </a>
+      <a href="questionarios.html" class="card">
+        <span class="label">App</span>
+        <span class="name">Questionários</span>
+        <span class="desc">Gestão dos instrumentos por segmento</span>
+      </a>
+      <a href="relatorio.html" class="card">
+        <span class="label">App</span>
+        <span class="name">Relatório RAI</span>
+        <span class="desc">Documento de autoavaliação · MEC</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      Design v3 · Rev. 3 · Abril 2026
+    </div>
+  </div>
+</body>
+</html>

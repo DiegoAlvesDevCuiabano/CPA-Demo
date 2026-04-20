@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório de Autoavaliação - CPA Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --ink-2: #1a2a42;
+      --navy: #14345c;
+      --navy-2: #0f2544;
+      --navy-soft: #3d5a85;
+      --paper: #f3efe4;
+      --paper-2: #eae4d4;
+      --paper-3: #ded5bf;
+      --line: #d5cbb2;
+      --line-strong: #14345c;
+      --muted: #6b6450;
+      --bordo: #7a2a2a;
+      --bordo-2: #9a3838;
+      --ocre: #c08a2a;
+      --oliva: #5a6b3a;
+      --bg-body: #f7f7f5;
+      --sidebar-width: 260px;
+      --navbar-height: 56px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter Tight', 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--ink);
+    }
+
+    /* ── Top Navbar (cream) ── */
+    .top-navbar {
+      background: var(--paper);
+      height: var(--navbar-height);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1040;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .top-navbar .navbar-brand {
+      display: flex; align-items: center; gap: 0.65rem;
+      text-decoration: none; color: var(--navy);
+    }
+    .navbar-brand .logo-selo {
+      width: 32px; height: 32px;
+    }
+    .navbar-brand .wordmark {
+      display: flex; flex-direction: column;
+    }
+    .navbar-brand .wordmark-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1.15rem; font-weight: 400; color: var(--navy);
+      line-height: 1.1; letter-spacing: -0.3px;
+    }
+    .navbar-brand .wordmark-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem; font-weight: 500; color: var(--muted);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .top-navbar .navbar-right {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .notification-btn {
+      position: relative; background: none; border: none;
+      color: var(--muted); font-size: 1.15rem;
+      padding: 0.35rem; cursor: pointer; transition: color 0.2s;
+    }
+    .notification-btn:hover { color: var(--navy); }
+    .notification-badge {
+      position: absolute; top: 0; right: -2px;
+      background: var(--bordo); color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      width: 16px; height: 16px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .user-dropdown .dropdown-toggle {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: none; border: none; color: var(--navy);
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.85rem; font-weight: 500; cursor: pointer;
+      padding: 0.25rem 0.5rem; border-radius: 6px; transition: background 0.2s;
+    }
+    .user-dropdown .dropdown-toggle:hover { background: var(--paper-2); color: var(--navy); }
+    .user-dropdown .dropdown-toggle::after { display: none; }
+    .user-avatar {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--navy); color: var(--paper);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600; font-size: 0.72rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sidebar-toggle-btn {
+      display: none; background: none; border: none;
+      color: var(--navy); font-size: 1.3rem;
+      padding: 0.25rem 0.4rem; cursor: pointer;
+    }
+
+    /* ── Sidebar (white) ── */
+    .sidebar {
+      position: fixed;
+      top: var(--navbar-height); left: 0; bottom: 0;
+      width: var(--sidebar-width);
+      background: #fff;
+      border-right: 1px solid var(--line);
+      z-index: 1030;
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-section { padding: 0 12px; margin-bottom: 6px; }
+    .sidebar-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .6rem; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--muted); padding: 12px 14px 4px; font-weight: 500;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 14px; margin: 1px 0;
+      color: var(--ink); text-decoration: none;
+      font-size: 0.88rem; font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent; cursor: pointer;
+      border-radius: 6px;
+    }
+    .sidebar-item:hover { background: #f2f1ef; color: var(--ink); }
+    .sidebar-item.active {
+      background: rgba(20,52,92,0.06); color: var(--navy);
+      border-left-color: var(--navy); font-weight: 600;
+    }
+    .sidebar-item i { font-size: 1.1rem; width: 20px; text-align: center; }
+    .sidebar-item .sidebar-badge {
+      margin-left: auto; background: var(--ocre); color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem; font-weight: 600;
+      padding: 0.15rem 0.5rem; border-radius: 10px;
+    }
+    .sidebar-divider { border-top: 1px solid var(--line); margin: 10px 12px; }
+
+    /* ── Main ── */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      margin-top: var(--navbar-height);
+      min-height: calc(100vh - var(--navbar-height));
+      background: var(--bg-body);
+    }
+
+    /* ── Page Header (editorial, no gradient) ── */
+    .page-header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      padding: 2rem 1.75rem 1.5rem;
+    }
+    .page-header h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700; font-size: 1.8rem; margin-bottom: 0.3rem;
+      color: var(--ink); letter-spacing: -0.3px;
+    }
+    .page-header .subtitle {
+      font-family: 'Inter Tight', sans-serif;
+      color: var(--muted); margin: 0; font-size: 0.85rem; font-weight: 400;
+    }
+
+    /* ── Action Bar ── */
+    .action-bar {
+      background: #fff;
+      padding: 0.75rem 1.75rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.15rem; border-radius: 6px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      border: 1.5px solid var(--line); background: #fff;
+      color: var(--ink-2); cursor: pointer; transition: all 0.2s;
+    }
+    .btn-action:hover { border-color: var(--navy-soft); color: var(--navy); background: var(--paper); }
+    .btn-action.primary { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+    .btn-action.primary:hover { background: var(--navy-2); }
+
+    /* ── Document Container ── */
+    .document-wrap {
+      max-width: 840px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 3rem;
+    }
+    .document-page {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 2.5rem 3rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 4px rgba(14,26,43,0.04);
+    }
+
+    /* ── Document Header ── */
+    .doc-header {
+      text-align: center;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .doc-header .doc-institution {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: var(--muted); margin-bottom: 0.75rem;
+    }
+    .doc-header h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.75rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 0.25rem;
+      letter-spacing: -0.3px;
+    }
+    .doc-header .doc-subtitle {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1.1rem; font-weight: 400;
+      color: var(--navy-soft); font-style: italic;
+    }
+    .doc-header .doc-cycle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--muted); margin-top: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Section numbering ── */
+    .section-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: 1.5px; margin-bottom: 0.35rem;
+    }
+    .section-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--ink); margin-bottom: 1.25rem;
+      letter-spacing: -0.2px;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 2rem 0;
+    }
+
+    /* ── Summary Grid (clean) ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .summary-item {
+      text-align: center;
+      padding: 1.25rem 0.75rem;
+      border-right: 1px solid var(--line);
+    }
+    .summary-item:last-child { border-right: none; }
+    .summary-item .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem; font-weight: 600; color: var(--navy);
+    }
+    .summary-item .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; color: var(--muted);
+      font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 0.3rem;
+    }
+
+    /* ── Chart area ── */
+    .chart-container {
+      margin-top: 1.5rem;
+    }
+
+    /* ── Dimension Detail Cards ── */
+    .dimension-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .dimension-header {
+      padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .dimension-header h6 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700; font-size: 1.05rem; margin: 0;
+      color: var(--ink);
+    }
+    .score-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600; font-size: 0.95rem; padding: 0.3rem 0.75rem;
+      border-radius: 4px; color: #fff;
+    }
+    .score-badge.potencialidade { background: var(--oliva); }
+    .score-badge.fragilidade { background: var(--bordo); }
+    .type-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 3px;
+    }
+    .type-badge.potencialidade { background: rgba(90,107,58,0.12); color: var(--oliva); }
+    .type-badge.fragilidade { background: rgba(122,42,42,0.12); color: var(--bordo); }
+    .dimension-body { padding: 1.5rem; }
+
+    /* ── Analysis Textarea (writing area) ── */
+    .analise-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.5rem;
+    }
+    .analise-textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1rem; line-height: 1.7;
+      color: var(--ink); background: var(--paper);
+      resize: vertical; min-height: 100px;
+      transition: all 0.2s;
+    }
+    .analise-textarea::placeholder {
+      font-family: 'Instrument Serif', Georgia, serif;
+      color: var(--muted); font-style: italic;
+    }
+    .analise-textarea:focus {
+      outline: none; border-color: var(--navy);
+      background: var(--paper); box-shadow: 0 0 0 3px rgba(20,52,92,0.06);
+    }
+
+    /* ── Plano de Melhorias Table ── */
+    .table-custom { font-size: 0.85rem; }
+    .table-custom thead th {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--paper); font-weight: 600; font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
+      border-bottom: 1px solid var(--line); padding: 0.75rem 1rem;
+    }
+    .table-custom tbody td {
+      padding: 0.75rem 1rem; vertical-align: middle;
+      border-bottom: 1px solid var(--line);
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .table-custom tbody tr:hover { background: rgba(20,52,92,0.02); }
+    .status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem;
+      border-radius: 3px; display: inline-block;
+      letter-spacing: 0.3px;
+    }
+    .status-badge.concluido { background: rgba(90,107,58,0.12); color: var(--oliva); }
+    .status-badge.em-andamento { background: rgba(20,52,92,0.08); color: var(--navy); }
+    .status-badge.pendente { background: rgba(107,100,80,0.1); color: var(--muted); }
+
+    .add-action-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 500;
+      padding: 0.3rem 0.75rem; border-radius: 4px;
+      border: 1px solid var(--line); background: #fff;
+      color: var(--navy); cursor: pointer; transition: all 0.2s;
+    }
+    .add-action-btn:hover { background: var(--paper); border-color: var(--navy-soft); }
+
+    /* ── Responsive ── */
+    @media (max-width: 991px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.show { transform: translateX(0); box-shadow: 0 8px 24px rgba(14,26,43,0.12); }
+      .sidebar-toggle-btn { display: block; }
+      .main-content { margin-left: 0; }
+      .document-page { padding: 1.5rem; }
+    }
+    @media (max-width: 767px) {
+      .action-bar { padding: 0.75rem 1rem; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .summary-item { border-bottom: 1px solid var(--line); }
+      .document-wrap { padding: 0 0.75rem 2rem; }
+      .document-page { padding: 1.25rem; }
+      .page-header { padding: 1.25rem; }
+      .dimension-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <button class="sidebar-toggle-btn" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand" href="#">
+        <svg class="logo-selo" width="32" height="32" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="10" fill="#14345c"/>
+          <text x="32" y="42" font-family="Georgia,serif" font-size="26" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
+          <line x1="22" y1="47" x2="42" y2="47" stroke="#7a2a2a" stroke-width="1.2"/>
+        </svg>
+        <div class="wordmark">
+          <span class="wordmark-title">CPA Digital</span>
+          <span class="wordmark-sub">Autoavaliação Institucional</span>
+        </div>
+      </a>
+    </div>
+    <div class="navbar-right">
+      <button class="notification-btn">
+        <i class="bi bi-bell"></i>
+        <span class="notification-badge">3</span>
+      </button>
+      <div class="user-dropdown dropdown">
+        <button class="dropdown-toggle" data-bs-toggle="dropdown">
+          <div class="user-avatar">MA</div>
+          <span class="d-none d-sm-inline">Maria Alves</span>
+          <i class="bi bi-chevron-down" style="font-size:0.65rem;opacity:0.6"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" style="font-size:0.88rem;">
+          <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Meu Perfil</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Menu Principal</div>
+      <a href="dashboard-cpa.html" class="sidebar-item">
+        <i class="bi bi-grid-1x2-fill"></i> Dashboard
+      </a>
+      <a href="questionarios.html" class="sidebar-item">
+        <i class="bi bi-file-earmark-text"></i> Questionários
+        <span class="sidebar-badge">3</span>
+      </a>
+      <a href="relatorio.html" class="sidebar-item active">
+        <i class="bi bi-bar-chart-line"></i> Relatórios
+      </a>
+      <a href="#" class="sidebar-item">
+        <i class="bi bi-clipboard-check"></i> Plano de Melhorias
+      </a>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Administração</div>
+      <a href="#" class="sidebar-item">
+        <i class="bi bi-arrow-repeat"></i> Ciclos
+      </a>
+      <a href="#" class="sidebar-item">
+        <i class="bi bi-people"></i> Membros CPA
+      </a>
+      <a href="#" class="sidebar-item">
+        <i class="bi bi-gear"></i> Configurações
+      </a>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <a href="login.html" class="sidebar-item">
+        <i class="bi bi-box-arrow-left"></i> Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2>Relatório de Autoavaliação</h2>
+      <p class="subtitle">Ciclo 2024-2026 — Relatório parcial</p>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn-action primary"><i class="bi bi-file-pdf"></i> Gerar PDF</button>
+      <button class="btn-action"><i class="bi bi-download"></i> Exportar Dados</button>
+      <button class="btn-action"><i class="bi bi-pencil-square"></i> Editar Análises</button>
+      <span style="flex:1"></span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);">Última atualização: 14/04/2026</span>
+    </div>
+
+    <!-- Document Content -->
+    <div class="document-wrap">
+
+      <!-- Document Cover / Header Page -->
+      <div class="document-page">
+        <div class="doc-header">
+          <div class="doc-institution">Universidade Federal Exemplo</div>
+          <h1>Relatório de Autoavaliação Institucional</h1>
+          <div class="doc-subtitle">Comissão Própria de Avaliação</div>
+          <div class="doc-cycle">Ciclo 2024–2026 &middot; Relatório Parcial</div>
+        </div>
+
+        <!-- Section: Resumo Metodológico -->
+        <div class="section-number">Seção I</div>
+        <div class="section-title">Resumo Metodológico</div>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="value">2024–2026</div>
+            <div class="label">Ciclo</div>
+          </div>
+          <div class="summary-item">
+            <div class="value">Mar–Jun 2025</div>
+            <div class="label">Período Coleta</div>
+          </div>
+          <div class="summary-item">
+            <div class="value">1.247</div>
+            <div class="label">Respostas</div>
+          </div>
+          <div class="summary-item">
+            <div class="value">62%</div>
+            <div class="label">Participação</div>
+          </div>
+          <div class="summary-item">
+            <div class="value">10</div>
+            <div class="label">Dimensões</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Page -->
+      <div class="document-page">
+        <div class="section-number">Seção II</div>
+        <div class="section-title">Média por Dimensão</div>
+        <div class="chart-container" style="position:relative; height:400px;">
+          <canvas id="dimensionsChart"></canvas>
+        </div>
+        <div style="margin-top:1rem; text-align:right;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.5px;">Escala 0–10</span>
+        </div>
+      </div>
+
+      <!-- Dimension Detail Section -->
+      <div class="document-page">
+        <div class="section-number">Seção III</div>
+        <div class="section-title">Análise por Dimensão</div>
+
+        <!-- D1 -->
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <h6>D1 — Missão e PDI</h6>
+              <span class="type-badge potencialidade">Potencialidade</span>
+            </div>
+            <div class="score-badge potencialidade">
+              <i class="bi bi-arrow-up-short"></i> 8.2
+            </div>
+          </div>
+          <div class="dimension-body">
+            <div style="height:160px; margin-bottom:1.25rem;">
+              <canvas id="d1Chart"></canvas>
+            </div>
+            <div class="analise-label">Análise da CPA</div>
+            <textarea class="analise-textarea">A comunidade acadêmica demonstra amplo conhecimento e alinhamento com a missão institucional. O PDI é referenciado com frequência, indicando integração entre planejamento e prática. Ponto forte que deve ser mantido e comunicado nos processos de ingresso.</textarea>
+          </div>
+        </div>
+
+        <!-- D4 -->
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <h6>D4 — Comunicação</h6>
+              <span class="type-badge fragilidade">Fragilidade</span>
+            </div>
+            <div class="score-badge fragilidade">
+              <i class="bi bi-arrow-down-short"></i> 5.2
+            </div>
+          </div>
+          <div class="dimension-body">
+            <div style="height:160px; margin-bottom:1.25rem;">
+              <canvas id="d4Chart"></canvas>
+            </div>
+            <div class="analise-label">Análise da CPA</div>
+            <textarea class="analise-textarea">A comunicação institucional apresenta fragilidades significativas. Discentes e docentes relatam dificuldade em acessar informações sobre processos acadêmicos, prazos e decisões colegiadas. Necessidade urgente de revisão dos canais e fluxos de comunicação.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plano de Melhorias -->
+      <div class="document-page">
+        <div class="section-number">Seção IV</div>
+        <div class="section-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Plano de Melhorias</span>
+          <button class="add-action-btn"><i class="bi bi-plus-lg"></i> Nova Ação</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-custom mb-0">
+            <thead>
+              <tr>
+                <th>Ação</th>
+                <th>Dimensão</th>
+                <th>Responsável</th>
+                <th>Prazo</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600;">Reformulação do portal do aluno</td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted)">D4 Comunicação</span></td>
+                <td>Coord. TI</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;">Dez/2025</td>
+                <td><span class="status-badge em-andamento">Em andamento</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">Implantação de newsletter semanal</td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted)">D4 Comunicação</span></td>
+                <td>Assessoria Comunicação</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;">Ago/2025</td>
+                <td><span class="status-badge concluido">Concluído</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600;">Revisão do PDI com participação discente</td>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted)">D1 Missão e PDI</span></td>
+                <td>Pró-Reitoria Acadêmica</td>
+                <td style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;">Mar/2026</td>
+                <td><span class="status-badge pendente">Pendente</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Color function — brand colors
+    function getBarColor(val) {
+      if (val >= 7) return '#14345c';  // navy — good
+      if (val >= 6) return '#c08a2a';  // ocre — medium
+      return '#7a2a2a';               // bordo — low
+    }
+
+    // Dimensions data
+    const dims = [
+      { label: 'D1 Missão e PDI', value: 8.2 },
+      { label: 'D2 Desenv. Institucional', value: 7.5 },
+      { label: 'D3 Políticas Acadêmicas', value: 7.8 },
+      { label: 'D4 Comunicação', value: 5.2 },
+      { label: 'D5 Políticas de Pessoal', value: 6.8 },
+      { label: 'D6 Organização e Gestão', value: 7.1 },
+      { label: 'D7 Infraestrutura', value: 6.4 },
+      { label: 'D8 Planej. e Avaliação', value: 7.9 },
+      { label: 'D9 Atendimento Estudantes', value: 5.8 },
+      { label: 'D10 Sustentabilidade', value: 7.3 }
+    ];
+
+    // Horizontal bar chart
+    new Chart(document.getElementById('dimensionsChart'), {
+      type: 'bar',
+      data: {
+        labels: dims.map(d => d.label),
+        datasets: [{
+          data: dims.map(d => d.value),
+          backgroundColor: dims.map(d => getBarColor(d.value)),
+          borderRadius: 2,
+          barThickness: 26
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0e1a2b',
+            titleFont: { family: 'Inter Tight', weight: '600' },
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            padding: 10,
+            callbacks: {
+              label: ctx => ' Nota: ' + ctx.raw.toFixed(1)
+            }
+          }
+        },
+        scales: {
+          x: {
+            min: 0, max: 10,
+            grid: { color: '#eae4d4' },
+            ticks: {
+              font: { family: 'JetBrains Mono', size: 11 },
+              color: '#6b6450',
+              stepSize: 2
+            }
+          },
+          y: {
+            grid: { display: false },
+            ticks: {
+              font: { family: 'Inter Tight', size: 12, weight: '600' },
+              color: '#1a2a42'
+            }
+          }
+        }
+      }
+    });
+
+    // Distribution chart colors (brand)
+    const distColors = ['#7a2a2a', '#9a3838', '#c08a2a', '#5a6b3a', '#14345c'];
+
+    // D1 Likert distribution
+    new Chart(document.getElementById('d1Chart'), {
+      type: 'bar',
+      data: {
+        labels: ['DT', 'D', 'N', 'C', 'CT'],
+        datasets: [{
+          data: [2, 5, 10, 35, 48],
+          backgroundColor: distColors,
+          borderRadius: 2,
+          barThickness: 28
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0e1a2b',
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            callbacks: { label: ctx => ctx.raw + '%' }
+          }
+        },
+        scales: {
+          y: { display: false, max: 60 },
+          x: {
+            grid: { display: false },
+            ticks: { font: { family: 'JetBrains Mono', size: 11, weight: '600' }, color: '#6b6450' }
+          }
+        }
+      }
+    });
+
+    // D4 Likert distribution
+    new Chart(document.getElementById('d4Chart'), {
+      type: 'bar',
+      data: {
+        labels: ['DT', 'D', 'N', 'C', 'CT'],
+        datasets: [{
+          data: [18, 28, 22, 20, 12],
+          backgroundColor: distColors,
+          borderRadius: 2,
+          barThickness: 28
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0e1a2b',
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            callbacks: { label: ctx => ctx.raw + '%' }
+          }
+        },
+        scales: {
+          y: { display: false, max: 40 },
+          x: {
+            grid: { display: false },
+            ticks: { font: { family: 'JetBrains Mono', size: 11, weight: '600' }, color: '#6b6450' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
