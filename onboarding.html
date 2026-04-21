@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Configuração Inicial — CPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --ink-2: #1a2a42;
+      --navy: #14345c;
+      --navy-2: #0f2544;
+      --navy-soft: #3d5a85;
+      --paper: #f3efe4;
+      --paper-2: #eae4d4;
+      --paper-3: #ded5bf;
+      --line: #d5cbb2;
+      --muted: #6b6450;
+      --bordo: #7a2a2a;
+      --ocre: #c08a2a;
+      --oliva: #5a6b3a;
+      --white: #ffffff;
+      --bg-body: #f7f7f5;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter Tight', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-body);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Top Bar ── */
+    .onboard-topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--navy);
+    }
+
+    .topbar-brand svg { width: 32px; height: 32px; }
+
+    .topbar-brand .wordmark {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+
+    .topbar-skip {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .topbar-skip:hover { color: var(--navy); }
+
+    /* ── Progress Steps ── */
+    .steps-container {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      padding: 1.5rem 2rem;
+    }
+
+    .steps-row {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex: 1;
+      position: relative;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+
+    .step.active .step-number {
+      background: var(--navy);
+      color: var(--paper);
+    }
+
+    .step.completed .step-number {
+      background: var(--oliva);
+      color: var(--white);
+    }
+
+    .step.pending .step-number {
+      background: var(--paper-2);
+      color: var(--muted);
+    }
+
+    .step-info { display: flex; flex-direction: column; }
+
+    .step-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    .step-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .step.pending .step-name { color: var(--muted); }
+
+    .step-connector {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 1px;
+      background: var(--line);
+      margin: 0 0.5rem;
+    }
+
+    .step-connector.active { background: var(--navy); }
+
+    /* ── Progress bar ── */
+    .progress-bar-wrapper {
+      max-width: 640px;
+      margin: 1rem auto 0;
+    }
+
+    .progress-track {
+      height: 3px;
+      background: var(--paper-2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Content ── */
+    .onboard-content {
+      max-width: 640px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .step-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .step-card h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-card .card-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Form styling */
+    .form-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      font-family: 'Inter Tight', sans-serif;
+      transition: all 0.2s;
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(20, 52, 92, 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--navy-soft);
+      opacity: 0.45;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Logo upload */
+    .logo-upload {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .logo-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1.5px dashed var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .logo-preview:hover {
+      border-color: var(--navy);
+      background: var(--paper-2);
+    }
+
+    .logo-preview i {
+      font-size: 1.6rem;
+      color: var(--muted);
+    }
+
+    .logo-upload-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .logo-upload-info .upload-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .logo-upload-info .upload-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .logo-upload-info .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      margin-top: 0.15rem;
+    }
+    .logo-upload-info .upload-btn:hover { text-decoration: underline; }
+
+    /* Members table (step 3) */
+    .members-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .members-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      background: var(--paper);
+    }
+
+    .members-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    .members-table tbody tr:hover {
+      background: rgba(20, 52, 92, 0.02);
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    .role-badge.coord { background: rgba(20, 52, 92, 0.08); color: var(--navy); }
+    .role-badge.membro { background: rgba(192, 138, 42, 0.1); color: var(--ocre); }
+
+    .btn-add-member {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: none;
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.2s;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .btn-add-member:hover {
+      border-color: var(--navy);
+      background: rgba(20, 52, 92, 0.03);
+    }
+
+    .btn-remove {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    .btn-remove:hover { color: var(--bordo); background: rgba(122, 42, 42, 0.06); }
+
+    /* ── Navigation ── */
+    .onboard-nav {
+      max-width: 640px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-outline {
+      padding: 0.65rem 1.5rem;
+      background: var(--white);
+      color: var(--ink-2);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: 'Inter Tight', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-outline:hover {
+      background: var(--paper);
+      border-color: var(--navy-soft);
+    }
+
+    .btn-primary {
+      padding: 0.65rem 1.5rem;
+      background: var(--navy);
+      color: var(--paper);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: 'Inter Tight', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-primary:hover {
+      background: var(--navy-2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(20, 52, 92, 0.25);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 767px) {
+      .steps-container { padding: 1.25rem 1rem; }
+      .onboard-content { padding: 0 1rem; }
+      .onboard-nav { padding: 0 1rem; }
+      .step-card { padding: 1.5rem; }
+      .step-info { display: none; }
+      .step-connector { width: 24px; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="onboard-topbar">
+  <a href="#" class="topbar-brand">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="96" stroke="#14345c" stroke-width="3" fill="none"/>
+      <circle cx="100" cy="100" r="62" fill="#14345c"/>
+      <text x="100" y="112" font-family="Georgia, 'Instrument Serif', serif" font-size="36" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
+      <line x1="70" y1="120" x2="130" y2="120" stroke="#7a2a2a" stroke-width="1.5"/>
+    </svg>
+    <span class="wordmark">CPA</span>
+  </a>
+  <a href="dashboard-cpa.html" class="topbar-skip">Pular configuração <i class="bi bi-arrow-right"></i></a>
+</div>
+
+<!-- Progress Steps -->
+<div class="steps-container">
+  <div class="steps-row">
+    <div class="step active" id="stepIndicator1">
+      <div class="step-number">1</div>
+      <div class="step-info">
+        <span class="step-label">Etapa 1</span>
+        <span class="step-name">Instituição</span>
+      </div>
+    </div>
+    <div class="step-connector" id="connector1"></div>
+    <div class="step pending" id="stepIndicator2">
+      <div class="step-number">2</div>
+      <div class="step-info">
+        <span class="step-label">Etapa 2</span>
+        <span class="step-name">Primeiro Ciclo</span>
+      </div>
+    </div>
+    <div class="step-connector" id="connector2"></div>
+    <div class="step pending" id="stepIndicator3">
+      <div class="step-number">3</div>
+      <div class="step-info">
+        <span class="step-label">Etapa 3</span>
+        <span class="step-name">Equipe CPA</span>
+      </div>
+    </div>
+  </div>
+  <div class="progress-bar-wrapper">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 33%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Content -->
+<div class="onboard-content">
+
+  <!-- Step 1: Dados da Instituição -->
+  <div class="step-card" id="step1">
+    <h2>Dados da Instituição</h2>
+    <p class="card-desc">Complete as informações da sua IES para personalizar o sistema.</p>
+
+    <div class="logo-upload">
+      <div class="logo-preview">
+        <i class="bi bi-building"></i>
+      </div>
+      <div class="logo-upload-info">
+        <span class="upload-label">Logo da instituição</span>
+        <span class="upload-hint">PNG ou SVG, máximo 2 MB. Será exibido nos relatórios e questionários.</span>
+        <span class="upload-btn"><i class="bi bi-upload"></i> Enviar imagem</span>
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-bottom:0">
+      <div class="form-group">
+        <label>Nome fantasia</label>
+        <input type="text" placeholder="Ex: Faculdade Exemplo" value="Faculdade Exemplo">
+      </div>
+      <div class="form-group">
+        <label>Sigla</label>
+        <input type="text" placeholder="Ex: FACEX" value="FACEX">
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-bottom:0">
+      <div class="form-group">
+        <label>Site institucional</label>
+        <input type="url" placeholder="https://www.exemplo.edu.br">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="tel" placeholder="(00) 0000-0000">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Endereço</label>
+      <input type="text" placeholder="Rua, número, bairro">
+    </div>
+
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>Cidade</label>
+        <input type="text" placeholder="Cidade">
+      </div>
+      <div class="form-group">
+        <label>UF</label>
+        <select>
+          <option value="">Selecione</option>
+          <option value="AC">AC</option><option value="AL">AL</option><option value="AM">AM</option>
+          <option value="AP">AP</option><option value="BA">BA</option><option value="CE">CE</option>
+          <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+          <option value="MA">MA</option><option value="MG">MG</option><option value="MS">MS</option>
+          <option value="MT" selected>MT</option><option value="PA">PA</option><option value="PB">PB</option>
+          <option value="PE">PE</option><option value="PI">PI</option><option value="PR">PR</option>
+          <option value="RJ">RJ</option><option value="RN">RN</option><option value="RO">RO</option>
+          <option value="RR">RR</option><option value="RS">RS</option><option value="SC">SC</option>
+          <option value="SE">SE</option><option value="SP">SP</option><option value="TO">TO</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>CEP</label>
+        <input type="text" placeholder="00000-000">
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Primeiro Ciclo -->
+  <div class="step-card" id="step2" style="display:none">
+    <h2>Primeiro Ciclo de Avaliação</h2>
+    <p class="card-desc">Crie o ciclo avaliativo que será usado para organizar seus questionários e relatórios.</p>
+
+    <div class="form-group">
+      <label>Nome do ciclo</label>
+      <input type="text" placeholder="Ex: Ciclo de Avaliação 2024–2026" value="Ciclo de Avaliação 2024–2026">
+    </div>
+
+    <div class="form-row" style="margin-bottom:0">
+      <div class="form-group">
+        <label>Ano de início</label>
+        <select>
+          <option value="2024" selected>2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ano de fim</label>
+        <select>
+          <option value="2025">2025</option>
+          <option value="2026" selected>2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Descrição (opcional)</label>
+      <textarea placeholder="Descreva brevemente os objetivos deste ciclo de avaliação...">Ciclo de autoavaliação institucional alinhado ao período de recredenciamento, cobrindo todas as 10 dimensões do SINAES.</textarea>
+    </div>
+
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.25rem;margin-top:0.5rem;display:flex;gap:0.75rem;align-items:flex-start">
+      <i class="bi bi-info-circle" style="color:var(--navy);margin-top:2px;flex-shrink:0"></i>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">
+        O ciclo organiza seus questionários e relatórios. Você poderá criar questionários e coletar respostas dentro deste período. Um novo ciclo pode ser criado a qualquer momento.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Equipe CPA -->
+  <div class="step-card" id="step3" style="display:none">
+    <h2>Equipe da CPA</h2>
+    <p class="card-desc">Adicione os membros da Comissão Própria de Avaliação. Eles receberão um convite por email.</p>
+
+    <table class="members-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Função</th>
+          <th>Segmento</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:500">Profa. Maria Costa</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)">maria.costa@facex.edu.br</td>
+          <td><span class="role-badge coord">Coordenador</span></td>
+          <td style="color:var(--muted);font-size:0.78rem">Docente</td>
+          <td style="color:var(--muted);font-size:0.75rem;font-style:italic">Você</td>
+        </tr>
+        <tr>
+          <td style="font-weight:500">Prof. João Silva</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)">joao.silva@facex.edu.br</td>
+          <td><span class="role-badge membro">Membro</span></td>
+          <td style="color:var(--muted);font-size:0.78rem">Docente</td>
+          <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+        </tr>
+        <tr>
+          <td style="font-weight:500">Ana Oliveira</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)">ana.oliveira@facex.edu.br</td>
+          <td><span class="role-badge membro">Membro</span></td>
+          <td style="color:var(--muted);font-size:0.78rem">TAE</td>
+          <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+        </tr>
+        <tr>
+          <td style="font-weight:500">Lucas Santos</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)">lucas.santos@facex.edu.br</td>
+          <td><span class="role-badge membro">Membro</span></td>
+          <td style="color:var(--muted);font-size:0.78rem">Discente</td>
+          <td><button class="btn-remove"><i class="bi bi-x-lg"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn-add-member">
+      <i class="bi bi-plus-lg"></i> Adicionar membro
+    </button>
+
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.25rem;margin-top:1.5rem;display:flex;gap:0.75rem;align-items:flex-start">
+      <i class="bi bi-envelope" style="color:var(--navy);margin-top:2px;flex-shrink:0"></i>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5">
+        Cada membro receberá um email com instruções de acesso. Você pode adicionar mais membros depois nas configurações.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="onboard-nav">
+  <button class="btn-outline" id="btnPrev" style="visibility:hidden" onclick="prevStep()">
+    <i class="bi bi-arrow-left"></i> Anterior
+  </button>
+  <button class="btn-primary" id="btnNext" onclick="nextStep()">
+    Próximo <i class="bi bi-arrow-right"></i>
+  </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let currentStep = 1;
+const totalSteps = 3;
+
+function updateUI() {
+  // Show/hide steps
+  for (let i = 1; i <= totalSteps; i++) {
+    document.getElementById('step' + i).style.display = i === currentStep ? 'block' : 'none';
+  }
+
+  // Update indicators
+  for (let i = 1; i <= totalSteps; i++) {
+    const indicator = document.getElementById('stepIndicator' + i);
+    indicator.classList.remove('active', 'completed', 'pending');
+    if (i < currentStep) indicator.classList.add('completed');
+    else if (i === currentStep) indicator.classList.add('active');
+    else indicator.classList.add('pending');
+
+    // Update number to checkmark for completed
+    const numEl = indicator.querySelector('.step-number');
+    numEl.innerHTML = i < currentStep ? '<i class="bi bi-check" style="font-size:1rem"></i>' : i;
+  }
+
+  // Update connectors
+  for (let i = 1; i < totalSteps; i++) {
+    const conn = document.getElementById('connector' + i);
+    conn.classList.toggle('active', i < currentStep);
+  }
+
+  // Progress bar
+  document.getElementById('progressFill').style.width = ((currentStep / totalSteps) * 100) + '%';
+
+  // Nav buttons
+  document.getElementById('btnPrev').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+  const btnNext = document.getElementById('btnNext');
+  if (currentStep === totalSteps) {
+    btnNext.innerHTML = 'Concluir <i class="bi bi-check-lg"></i>';
+  } else {
+    btnNext.innerHTML = 'Próximo <i class="bi bi-arrow-right"></i>';
+  }
+}
+
+function nextStep() {
+  if (currentStep < totalSteps) {
+    currentStep++;
+    updateUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    window.location.href = 'dashboard-cpa.html';
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    currentStep--;
+    updateUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+</script>
+</body>
+</html>
