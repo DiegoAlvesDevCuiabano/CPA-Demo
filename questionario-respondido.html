@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Já Respondido — CPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --ink-2: #1a2a42;
+      --navy: #14345c;
+      --navy-soft: #3d5a85;
+      --paper: #f3efe4;
+      --paper-2: #eae4d4;
+      --paper-3: #ded5bf;
+      --line: #d5cbb2;
+      --muted: #6b6450;
+      --bordo: #7a2a2a;
+      --ocre: #c08a2a;
+      --oliva: #5a6b3a;
+      --white: #ffffff;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter Tight', 'Segoe UI', system-ui, sans-serif;
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .page-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 24px rgba(14, 26, 43, 0.06);
+      text-align: center;
+    }
+
+    /* Brand */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-selo { width: 48px; height: 48px; flex-shrink: 0; }
+
+    .brand-text { display: flex; flex-direction: column; text-align: left; }
+    .brand-text .institution {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .brand-text .subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    /* Status icon */
+    .status-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .status-icon i { font-size: 1.8rem; }
+
+    .status-icon.warning {
+      background: rgba(192, 138, 42, 0.1);
+      border: 1px solid rgba(192, 138, 42, 0.2);
+    }
+    .status-icon.warning i { color: var(--ocre); }
+
+    .page-card h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
+      line-height: 1.2;
+    }
+
+    .page-card .page-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.75rem;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .info-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .info-card p {
+      color: var(--ink-2);
+      font-size: 0.85rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .timestamp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .btn-outline-close {
+      width: 100%;
+      padding: 0.8rem;
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Inter Tight', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-outline-close:hover {
+      border-color: var(--navy);
+      background: var(--paper);
+    }
+
+    .page-footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-top: 2rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 575.98px) {
+      body { padding: 1rem; }
+      .page-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-card">
+
+  <div class="brand-header">
+    <svg class="brand-selo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="96" stroke="#14345c" stroke-width="1.5" fill="none"/>
+      <circle cx="100" cy="100" r="88" stroke="#14345c" stroke-width="0.5" fill="none"/>
+      <circle cx="100" cy="100" r="62" fill="#14345c"/>
+      <text x="100" y="112" font-family="Georgia, 'Instrument Serif', serif" font-size="36" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
+      <line x1="70" y1="120" x2="130" y2="120" stroke="#7a2a2a" stroke-width="1.5"/>
+      <defs>
+        <path id="topArc" d="M 30, 100 a 70,70 0 0,1 140,0"/>
+        <path id="bottomArc" d="M 170, 100 a 70,70 0 0,1 -140,0"/>
+      </defs>
+      <text font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#14345c" letter-spacing="3" font-weight="500">
+        <textPath href="#topArc" startOffset="50%" text-anchor="middle">COMISSAO PROPRIA</textPath>
+      </text>
+      <text font-family="'JetBrains Mono', monospace" font-size="7.5" fill="#14345c" letter-spacing="3" font-weight="500">
+        <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">DE AVALIACAO</textPath>
+      </text>
+      <circle cx="100" cy="18" r="2" fill="#7a2a2a"/>
+      <circle cx="100" cy="182" r="2" fill="#7a2a2a"/>
+      <circle cx="18" cy="100" r="2" fill="#7a2a2a"/>
+      <circle cx="182" cy="100" r="2" fill="#7a2a2a"/>
+    </svg>
+    <div class="brand-text">
+      <span class="institution">Faculdade Exemplo</span>
+      <span class="subtitle">Comissão Própria de Avaliação</span>
+    </div>
+  </div>
+
+  <div class="status-icon warning">
+    <i class="bi bi-exclamation-circle"></i>
+  </div>
+
+  <h2>Questionário já respondido</h2>
+  <p class="page-subtitle">Identificamos que você já enviou sua resposta para este questionário.</p>
+
+  <div class="info-card">
+    <p>Para garantir a integridade dos resultados, cada participante pode responder apenas uma vez. Suas respostas já foram registradas de forma anônima.</p>
+  </div>
+
+  <div class="timestamp">Respondido em 15/04/2025 às 14:32</div>
+
+  <button class="btn-outline-close" onclick="window.close()">Fechar</button>
+
+  <div class="page-footer">Comissão Própria de Avaliação · SINAES</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
