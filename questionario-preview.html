@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview — Avaliação Institucional 2024–2026 | CPA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    :root {
+      --ink: #0e1a2b;
+      --ink-2: #1a2a42;
+      --navy: #14345c;
+      --navy-soft: #3d5a85;
+      --paper: #f3efe4;
+      --paper-2: #eae4d4;
+      --paper-3: #ded5bf;
+      --line: #d5cbb2;
+      --muted: #6b6450;
+      --bordo: #7a2a2a;
+      --ocre: #c08a2a;
+      --oliva: #5a6b3a;
+      --white: #ffffff;
+      --danger: #b91c1c;
+      --bg-body: #f7f7f5;
+      --radius: 8px;
+      --toolbar-h: 48px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter Tight', 'Segoe UI', system-ui, sans-serif;
+      color: var(--ink);
+      margin: 0;
+      background: var(--bg-body);
+      min-height: 100vh;
+      padding-top: var(--toolbar-h);
+    }
+
+    /* ══════════════════════════════════════
+       ADMIN TOOLBAR (fixed top)
+       ══════════════════════════════════════ */
+    .admin-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1050;
+      height: var(--toolbar-h);
+      background: #fef3c7;
+      border-bottom: 2px solid var(--ocre);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1.25rem;
+    }
+    .admin-toolbar .toolbar-inner {
+      max-width: 1100px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .toolbar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--ocre);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+    }
+    .toolbar-badge i { font-size: 0.8rem; }
+    .toolbar-hint {
+      font-size: 0.78rem;
+      color: #92400e;
+      font-weight: 500;
+    }
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .btn-toolbar {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+      border: none;
+    }
+    .btn-toolbar-outline {
+      background: transparent;
+      border: 1.5px solid #92400e;
+      color: #92400e;
+    }
+    .btn-toolbar-outline:hover {
+      background: rgba(146, 64, 14, 0.08);
+      color: #92400e;
+    }
+    .btn-toolbar-primary {
+      background: var(--navy);
+      color: var(--paper);
+    }
+    .btn-toolbar-primary:hover {
+      background: var(--ink-2);
+      color: var(--paper);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(20, 52, 92, 0.3);
+    }
+
+    /* ══════════════════════════════════════
+       RESPONDENT TOP BAR
+       ══════════════════════════════════════ */
+    .top-bar {
+      background: var(--paper-2);
+      padding: 10px 0;
+      position: sticky;
+      top: var(--toolbar-h);
+      z-index: 100;
+      border-bottom: 1px solid var(--line);
+    }
+    .top-bar .inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-selo-small {
+      width: 32px;
+      height: 32px;
+    }
+    .logo-text-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-text {
+      color: var(--navy);
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.1;
+    }
+    .institution-name {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .top-bar-cpa {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    /* ══════════════════════════════════════
+       QUESTIONNAIRE CONTAINER
+       ══════════════════════════════════════ */
+    .questionnaire-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    /* ── Header Card ── */
+    .header-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem 2rem 1.75rem;
+      border: 1px solid var(--line);
+      margin-bottom: 1rem;
+    }
+    .header-card h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 0.85rem;
+      line-height: 1.25;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .badge-segment {
+      background: rgba(20, 52, 92, 0.08);
+      color: var(--navy);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-anonymous {
+      background: rgba(90, 107, 58, 0.1);
+      color: var(--oliva);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-time {
+      background: rgba(107, 100, 80, 0.1);
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Privacy Notice ── */
+    .privacy-notice {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--bordo);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+    .privacy-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(122, 42, 42, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .privacy-icon i {
+      color: var(--bordo);
+      font-size: 1.15rem;
+    }
+    .privacy-content h4 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 0.3rem;
+    }
+    .privacy-content p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .privacy-content strong {
+      color: var(--ink-2);
+    }
+
+    /* ── Progress ── */
+    .progress-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--line);
+      margin-bottom: 1.5rem;
+    }
+    .progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+    .progress-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .progress-percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .progress-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .progress-title {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .progress-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .progress-bar-track {
+      height: 6px;
+      background: #ebebea;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--navy);
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    /* ── Questions ── */
+    .question-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      border: 1px solid var(--line);
+      margin-bottom: 1.25rem;
+      transition: border-color 0.2s;
+    }
+    .question-card:focus-within {
+      border-color: var(--navy-soft);
+      box-shadow: 0 0 0 3px rgba(20, 52, 92, 0.06);
+    }
+    .question-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--navy-soft);
+      margin-bottom: 0.5rem;
+    }
+    .question-text {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      line-height: 1.45;
+    }
+    .question-required {
+      color: var(--bordo);
+      font-weight: 700;
+    }
+
+    /* ── Likert Radio Group ── */
+    .likert-group {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .likert-option {
+      flex: 1;
+      min-width: 0;
+    }
+    .likert-option input { display: none; }
+    .likert-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.7rem 0.4rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: #f5f5f3;
+      border: 1.5px solid var(--line);
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 56px;
+      line-height: 1.3;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .likert-option:first-child label {
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .likert-option:last-child label {
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .likert-option label:hover {
+      background: rgba(20, 52, 92, 0.05);
+      border-color: var(--navy-soft);
+      color: var(--navy);
+    }
+    .likert-option input:checked + label {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--paper);
+      box-shadow: 0 2px 8px rgba(20, 52, 92, 0.25);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Textarea ── */
+    .open-textarea {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #f5f5f3;
+      resize: vertical;
+      min-height: 100px;
+      transition: all 0.2s;
+    }
+    .open-textarea:focus {
+      outline: none;
+      border-color: var(--navy);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(20, 52, 92, 0.08);
+    }
+    .open-textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.5;
+    }
+    .char-counter {
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    /* ── Navigation ── */
+    .nav-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+    .btn-prev {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px solid var(--navy);
+      padding: 0.65rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.88rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .btn-prev:hover {
+      background: rgba(20, 52, 92, 0.04);
+    }
+    .btn-next {
+      background: var(--navy);
+      color: var(--paper);
+      border: none;
+      padding: 0.65rem 1.75rem;
+      font-weight: 600;
+      font-size: 0.88rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .btn-next:hover {
+      background: var(--ink-2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(20, 52, 92, 0.25);
+    }
+
+    /* ── Section Dots ── */
+    .section-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.25rem;
+    }
+    .section-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d5d5d3;
+      transition: all 0.3s;
+    }
+    .section-dot.completed {
+      background: var(--oliva);
+    }
+    .section-dot.active {
+      background: var(--navy);
+      width: 28px;
+      border-radius: 5px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 576px) {
+      .questionnaire-container { padding: 1rem 0.75rem 2rem; }
+      .header-card { padding: 1.5rem; }
+      .header-card h1 { font-size: 1.3rem; }
+      .question-card { padding: 1.25rem; }
+      .question-text { font-size: 1.05rem; }
+      .likert-group { flex-direction: column; }
+      .likert-option label {
+        border-radius: 0 !important;
+        min-height: auto;
+        padding: 0.6rem 0.75rem;
+        justify-content: flex-start;
+      }
+      .likert-option:first-child label { border-radius: var(--radius) var(--radius) 0 0 !important; }
+      .likert-option:last-child label { border-radius: 0 0 var(--radius) var(--radius) !important; }
+      .nav-footer { flex-direction: column; }
+      .btn-prev, .btn-next { width: 100%; justify-content: center; }
+      .top-bar-cpa { display: none; }
+      .toolbar-hint { display: none; }
+      .btn-toolbar { font-size: 0.72rem; padding: 0.3rem 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       ADMIN TOOLBAR
+       ══════════════════════════════════════ -->
+  <div class="admin-toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-left">
+        <span class="toolbar-badge"><i class="bi bi-eye-fill"></i> Modo Preview</span>
+        <span class="toolbar-hint">Visualizando como o respondente verá o questionário</span>
+      </div>
+      <div class="toolbar-right">
+        <a href="questionario-editor.html" class="btn-toolbar btn-toolbar-outline">
+          <i class="bi bi-arrow-left"></i> Voltar ao Editor
+        </a>
+        <button class="btn-toolbar btn-toolbar-primary">
+          <i class="bi bi-send-fill"></i> Publicar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       RESPONDENT TOP BAR
+       ══════════════════════════════════════ -->
+  <div class="top-bar">
+    <div class="inner">
+      <div class="logo-area">
+        <svg class="logo-selo-small" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="10" fill="#14345c"/>
+          <text x="32" y="42" font-family="Georgia, 'Instrument Serif', serif" font-size="26" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
+          <line x1="22" y1="47" x2="42" y2="47" stroke="#7a2a2a" stroke-width="1.2"/>
+        </svg>
+        <div class="logo-text-group">
+          <div class="logo-text">CPA</div>
+          <div class="institution-name">Faculdade Exemplo</div>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-bar-cpa">Comissão Própria de Avaliação</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       QUESTIONNAIRE CONTENT
+       ══════════════════════════════════════ -->
+  <div class="questionnaire-container">
+
+    <!-- Header Card -->
+    <div class="header-card">
+      <h1>Avaliação Institucional 2024–2026</h1>
+      <div class="badge-row">
+        <span class="badge-segment"><i class="bi bi-mortarboard-fill"></i> Discentes</span>
+        <span class="badge-anonymous"><i class="bi bi-shield-check"></i> Anônimo</span>
+        <span class="badge-time"><i class="bi bi-clock"></i> ~8 min</span>
+      </div>
+    </div>
+
+    <!-- Privacy Notice -->
+    <div class="privacy-notice">
+      <div class="privacy-icon">
+        <i class="bi bi-shield-lock-fill"></i>
+      </div>
+      <div class="privacy-content">
+        <h4>Suas respostas são completamente anônimas</h4>
+        <p>Nenhum dado pessoal será coletado ou vinculado às suas respostas. <strong>Não registramos IP, navegador ou qualquer informação identificável.</strong> Sua participação é fundamental para a melhoria contínua da instituição.</p>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-section">
+      <div class="progress-top">
+        <span class="progress-label">Seção 1 de 10 — Missão e PDI</span>
+        <span class="progress-percent">10%</span>
+      </div>
+      <div class="progress-meta">
+        <span class="progress-title">Eixo 2: Desenvolvimento Institucional</span>
+        <span class="progress-time">~8 min restantes</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" style="width: 10%"></div>
+      </div>
+    </div>
+
+    <!-- Question 1: Likert -->
+    <div class="question-card">
+      <div class="question-number">Questão 01</div>
+      <div class="question-text">A missão da instituição é clara e reflete seus objetivos educacionais? <span class="question-required">*</span></div>
+      <div class="likert-group">
+        <div class="likert-option">
+          <input type="radio" name="q1" id="q1_1" value="1">
+          <label for="q1_1">Discordo Totalmente</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q1" id="q1_2" value="2">
+          <label for="q1_2">Discordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q1" id="q1_3" value="3">
+          <label for="q1_3">Neutro</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q1" id="q1_4" value="4">
+          <label for="q1_4">Concordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q1" id="q1_5" value="5">
+          <label for="q1_5">Concordo Totalmente</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2: Likert -->
+    <div class="question-card">
+      <div class="question-number">Questão 02</div>
+      <div class="question-text">O Plano de Desenvolvimento Institucional (PDI) é divulgado de forma acessível à comunidade acadêmica? <span class="question-required">*</span></div>
+      <div class="likert-group">
+        <div class="likert-option">
+          <input type="radio" name="q2" id="q2_1" value="1">
+          <label for="q2_1">Discordo Totalmente</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q2" id="q2_2" value="2">
+          <label for="q2_2">Discordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q2" id="q2_3" value="3">
+          <label for="q2_3">Neutro</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q2" id="q2_4" value="4">
+          <label for="q2_4">Concordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q2" id="q2_5" value="5">
+          <label for="q2_5">Concordo Totalmente</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 3: Likert -->
+    <div class="question-card">
+      <div class="question-number">Questão 03</div>
+      <div class="question-text">As metas e objetivos institucionais estão alinhados com as necessidades da comunidade local e regional? <span class="question-required">*</span></div>
+      <div class="likert-group">
+        <div class="likert-option">
+          <input type="radio" name="q3" id="q3_1" value="1">
+          <label for="q3_1">Discordo Totalmente</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q3" id="q3_2" value="2">
+          <label for="q3_2">Discordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q3" id="q3_3" value="3">
+          <label for="q3_3">Neutro</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q3" id="q3_4" value="4">
+          <label for="q3_4">Concordo</label>
+        </div>
+        <div class="likert-option">
+          <input type="radio" name="q3" id="q3_5" value="5">
+          <label for="q3_5">Concordo Totalmente</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 4: Open Text -->
+    <div class="question-card">
+      <div class="question-number">Questão 04</div>
+      <div class="question-text">Caso deseje, deixe sugestões ou comentários sobre a missão e o PDI da instituição:</div>
+      <textarea class="open-textarea" id="q4_textarea" maxlength="1000" placeholder="Escreva suas sugestões aqui..."></textarea>
+      <div class="char-counter"><span id="charCount">0</span> / 1.000 caracteres</div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-footer">
+      <button class="btn-prev" disabled style="opacity:0.4;cursor:default;"><i class="bi bi-arrow-left"></i> Anterior</button>
+      <button class="btn-next">Próxima Seção <i class="bi bi-arrow-right"></i></button>
+    </div>
+
+    <!-- Section Dots -->
+    <div class="section-dots">
+      <div class="section-dot active"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+      <div class="section-dot"></div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Character counter
+    const textarea = document.getElementById('q4_textarea');
+    const charCount = document.getElementById('charCount');
+    textarea.addEventListener('input', function() {
+      charCount.textContent = this.value.length;
+    });
+  </script>
+</body>
+</html>
