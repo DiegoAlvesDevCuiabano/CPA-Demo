@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciclos de Avaliação — CPA</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+:root {
+  --ink: #0e1a2b;
+  --ink-2: #1a2a42;
+  --navy: #14345c;
+  --navy-2: #0f2544;
+  --navy-soft: #3d5a85;
+  --paper: #f3efe4;
+  --paper-2: #eae4d4;
+  --paper-3: #ded5bf;
+  --line: #d5cbb2;
+  --line-strong: #14345c;
+  --muted: #6b6450;
+  --bordo: #7a2a2a;
+  --bordo-2: #9a3838;
+  --ocre: #c08a2a;
+  --oliva: #5a6b3a;
+  --bg-body: #f7f7f5;
+  --sidebar-width: 260px;
+  --navbar-height: 56px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  background: var(--bg-body);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── Navbar ── */
+.top-navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1040;
+  height: var(--navbar-height);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.navbar-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); }
+.navbar-right { display: flex; align-items: center; gap: 16px; }
+.navbar-right .notif-btn {
+  background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; position: relative;
+  transition: color .2s;
+}
+.navbar-right .notif-btn:hover { color: var(--navy); }
+.notif-dot {
+  position: absolute; top: -2px; right: -2px; width: 7px; height: 7px;
+  background: var(--bordo); border-radius: 50%;
+}
+.user-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--navy); color: var(--paper); font-size: .68rem; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-name { color: var(--ink); font-size: .8rem; font-weight: 500; }
+.user-name small { display: block; color: var(--muted); font-size: .65rem; font-weight: 400; }
+.sidebar-toggle {
+  display: none; background: none; border: none; color: var(--navy); font-size: 1.3rem; cursor: pointer;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: var(--navbar-height); left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 1030;
+  background: #fff;
+  border-right: 1px solid var(--line);
+  padding: 20px 0 16px;
+  overflow-y: auto;
+  transition: transform .3s ease;
+}
+.sidebar-cpa-label {
+  padding: 0 20px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--muted); line-height: 1.6;
+}
+.sidebar-section { padding: 0 12px; margin-bottom: 6px; }
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--muted); padding: 12px 14px 6px; font-weight: 500;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; margin: 1px 0;
+  color: var(--ink-2); font-size: .85rem; font-weight: 500;
+  text-decoration: none; border-radius: 6px; border-left: 3px solid transparent;
+  transition: all .2s;
+}
+.sidebar-item:hover {
+  color: var(--ink); background: #f2f1ef;
+}
+.sidebar-item.active {
+  color: var(--navy); background: rgba(20,52,92,0.05);
+  border-left-color: var(--bordo); font-weight: 600;
+}
+.sidebar-item i { font-size: 1.05rem; width: 20px; text-align: center; opacity: .7; }
+.sidebar-item.active i { opacity: 1; }
+.sidebar-badge {
+  margin-left: auto; background: var(--navy); color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; padding: 2px 7px; border-radius: 10px;
+}
+.sidebar-divider { border-top: 1px solid var(--line); margin: 10px 12px; }
+
+/* ── Main content ── */
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* ── Page header ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+}
+.page-header-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 4px;
+}
+.page-header h1 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; color: var(--ink);
+}
+.page-header p { font-size: .82rem; color: var(--muted); margin: 0; }
+
+.content-area { padding: 1.5rem 2rem 2.5rem; }
+
+/* ── Buttons ── */
+.btn-primary-custom {
+  background: var(--navy); border: none; color: var(--paper); font-size: .8rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all .15s;
+}
+.btn-primary-custom:hover { background: var(--navy-2); color: var(--paper); }
+
+.btn-outline-custom {
+  background: #fff; border: 1.5px solid var(--line); color: var(--ink-2); font-size: .8rem; font-weight: 500;
+  padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all .15s; text-decoration: none;
+}
+.btn-outline-custom:hover { background: var(--paper); border-color: var(--navy-soft); color: var(--ink); }
+
+/* ── Cycle cards ── */
+.cycle-card {
+  background: #fff; border-radius: 6px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: box-shadow .15s;
+  display: flex; flex-direction: column; height: 100%;
+}
+.cycle-card:hover { box-shadow: 0 4px 16px rgba(14,26,43,0.06); }
+
+.cycle-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+
+.cycle-card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cycle-card-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.15rem; font-weight: 700; color: var(--ink); line-height: 1.3;
+}
+
+.cycle-dates {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; color: var(--muted); margin-top: 4px;
+}
+
+.status-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; font-weight: 500; letter-spacing: .5px; text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-badge.ativo { background: rgba(90,107,58,.12); color: var(--oliva); }
+.status-badge.encerrado { background: rgba(107,100,80,.08); color: var(--muted); }
+
+/* ── Stats row ── */
+.cycle-stats {
+  display: flex; gap: 24px; margin-bottom: 18px;
+}
+.cycle-stat-item { display: flex; flex-direction: column; }
+.cycle-stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .95rem; font-weight: 600; color: var(--navy); line-height: 1.2;
+}
+.cycle-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .5px; font-weight: 500; margin-top: 1px;
+}
+
+/* ── Progress ── */
+.cycle-progress-label { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.cycle-progress-label span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; font-weight: 500; color: var(--muted);
+}
+.cycle-progress-label span:last-child { color: var(--navy); font-weight: 600; }
+.cycle-progress-bar { height: 4px; background: var(--paper-2); border-radius: 2px; overflow: hidden; margin-bottom: 20px; }
+.cycle-progress-fill { height: 100%; border-radius: 2px; background: var(--navy); }
+
+.cycle-actions { margin-top: auto; }
+.btn-sm-custom {
+  font-size: .72rem; font-weight: 500; padding: 6px 12px; border-radius: 6px;
+  border: 1px solid var(--line); background: #fff; color: var(--navy); cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  display: inline-flex; align-items: center; gap: 4px; text-decoration: none;
+  transition: all .15s;
+}
+.btn-sm-custom:hover { background: var(--paper); border-color: var(--navy-soft); color: var(--ink); }
+.btn-sm-custom.primary { background: var(--navy); border-color: var(--navy); color: var(--paper); }
+.btn-sm-custom.primary:hover { background: var(--navy-2); }
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.show { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .sidebar-toggle { display: block; }
+}
+@media (max-width: 767px) {
+  .page-header { padding: 20px; }
+  .content-area { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="top-navbar">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+      <i class="bi bi-list"></i>
+    </button>
+    <a href="#" class="navbar-brand">
+      <svg viewBox="0 0 160 40" width="140" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <text x="20" y="26" font-family="Instrument Serif, Georgia, serif" font-size="11" font-weight="400" text-anchor="middle" fill="currentColor" letter-spacing="-0.3">CPA</text>
+        <line x1="13" y1="29" x2="27" y2="29" stroke="#7a2a2a" stroke-width="0.6"/>
+        <text x="46" y="23" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="17" fill="currentColor" letter-spacing="-0.3">CPA<tspan fill="#7a2a2a" font-style="normal">.</tspan></text>
+        <text x="47" y="34" font-family="JetBrains Mono, monospace" font-size="5.5" letter-spacing="2" fill="#6b6450">AVALIAÇÃO INSTITUCIONAL</text>
+      </svg>
+    </a>
+  </div>
+  <div class="navbar-right">
+    <button class="notif-btn">
+      <i class="bi bi-bell"></i>
+      <span class="notif-dot"></span>
+    </button>
+    <div class="user-area">
+      <div class="user-avatar">MC</div>
+      <div class="user-name">
+        Profa. Maria Costa
+        <small>Presidente CPA</small>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-cpa-label">Comissão Própria<br>de Avaliação</div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Menu Principal</div>
+    <a href="dashboard-cpa.html" class="sidebar-item">
+      <i class="bi bi-grid-1x2"></i> Dashboard
+    </a>
+    <a href="questionarios.html" class="sidebar-item">
+      <i class="bi bi-file-earmark-text"></i> Questionários
+      <span class="sidebar-badge">3</span>
+    </a>
+    <a href="relatorio.html" class="sidebar-item">
+      <i class="bi bi-bar-chart-line"></i> Relatórios
+    </a>
+    <a href="melhorias.html" class="sidebar-item">
+      <i class="bi bi-clipboard-check"></i> Plano de Melhorias
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Administração</div>
+    <a href="ciclos.html" class="sidebar-item active">
+      <i class="bi bi-arrow-repeat"></i> Ciclos
+    </a>
+    <a href="membros.html" class="sidebar-item">
+      <i class="bi bi-people"></i> Membros CPA
+    </a>
+    <a href="configuracoes.html" class="sidebar-item">
+      <i class="bi bi-gear"></i> Configurações
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <a href="login.html" class="sidebar-item">
+      <i class="bi bi-box-arrow-left"></i> Sair
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <!-- Page Header -->
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div class="page-header-label">Administração</div>
+      <h1>Ciclos de Avaliação</h1>
+      <p>Gerencie os ciclos de autoavaliação institucional</p>
+    </div>
+    <a href="ciclo-form.html" class="btn-primary-custom" style="text-decoration:none;">
+      <i class="bi bi-plus-lg"></i> Novo Ciclo
+    </a>
+  </div>
+
+  <div class="content-area">
+    <!-- Cycle Cards Grid -->
+    <div class="row g-3">
+
+      <!-- Card 1: Ciclo 2024–2026 (Ativo) -->
+      <div class="col-lg-6">
+        <div class="cycle-card">
+          <div class="cycle-card-body">
+            <div class="cycle-card-header">
+              <div>
+                <div class="cycle-card-title">Ciclo 2024–2026</div>
+                <div class="cycle-dates">Mar 2024 — Dez 2026</div>
+              </div>
+              <span class="status-badge ativo">Ativo</span>
+            </div>
+            <div class="cycle-stats">
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">3</div>
+                <div class="cycle-stat-label">Questionários</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">1.247</div>
+                <div class="cycle-stat-label">Respostas</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">62%</div>
+                <div class="cycle-stat-label">Participação</div>
+              </div>
+            </div>
+            <div class="cycle-progress-label">
+              <span>Participação geral</span>
+              <span>62%</span>
+            </div>
+            <div class="cycle-progress-bar">
+              <div class="cycle-progress-fill" style="width:62%"></div>
+            </div>
+            <div class="cycle-actions">
+              <a href="#" class="btn-sm-custom primary"><i class="bi bi-gear"></i> Gerenciar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Ciclo 2021–2023 (Encerrado) -->
+      <div class="col-lg-6">
+        <div class="cycle-card">
+          <div class="cycle-card-body">
+            <div class="cycle-card-header">
+              <div>
+                <div class="cycle-card-title">Ciclo 2021–2023</div>
+                <div class="cycle-dates">Jan 2021 — Dez 2023</div>
+              </div>
+              <span class="status-badge encerrado">Encerrado</span>
+            </div>
+            <div class="cycle-stats">
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">4</div>
+                <div class="cycle-stat-label">Questionários</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">2.103</div>
+                <div class="cycle-stat-label">Respostas</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">71%</div>
+                <div class="cycle-stat-label">Participação</div>
+              </div>
+            </div>
+            <div class="cycle-progress-label">
+              <span>Participação geral</span>
+              <span>71%</span>
+            </div>
+            <div class="cycle-progress-bar">
+              <div class="cycle-progress-fill" style="width:71%"></div>
+            </div>
+            <div class="cycle-actions">
+              <a href="#" class="btn-sm-custom"><i class="bi bi-file-earmark-pdf"></i> Ver Relatório</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Ciclo 2018–2020 (Encerrado) -->
+      <div class="col-lg-6">
+        <div class="cycle-card">
+          <div class="cycle-card-body">
+            <div class="cycle-card-header">
+              <div>
+                <div class="cycle-card-title">Ciclo 2018–2020</div>
+                <div class="cycle-dates">Fev 2018 — Dez 2020</div>
+              </div>
+              <span class="status-badge encerrado">Encerrado</span>
+            </div>
+            <div class="cycle-stats">
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">2</div>
+                <div class="cycle-stat-label">Questionários</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">987</div>
+                <div class="cycle-stat-label">Respostas</div>
+              </div>
+              <div class="cycle-stat-item">
+                <div class="cycle-stat-value">54%</div>
+                <div class="cycle-stat-label">Participação</div>
+              </div>
+            </div>
+            <div class="cycle-progress-label">
+              <span>Participação geral</span>
+              <span>54%</span>
+            </div>
+            <div class="cycle-progress-bar">
+              <div class="cycle-progress-fill" style="width:54%"></div>
+            </div>
+            <div class="cycle-actions">
+              <a href="#" class="btn-sm-custom"><i class="bi bi-file-earmark-pdf"></i> Ver Relatório</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
