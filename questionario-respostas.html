@@ -141,6 +141,7 @@ body {
   font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; color: var(--ink);
 }
 .page-header p { font-size: .82rem; color: var(--muted); margin: 0; }
+.page-header-actions { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
 
 .content-area { padding: 1.5rem 2rem 2.5rem; }
 
@@ -303,7 +304,7 @@ body {
   .page-header { padding: 20px; }
   .content-area { padding: 16px; }
   .kpi-card { padding: 16px 18px; }
-  .page-header-actions { flex-direction: column; align-items: flex-start !important; gap: 10px !important; }
+  .page-header-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
 }
 </style>
 </head>
@@ -384,7 +385,7 @@ body {
 <main class="main-content">
   <!-- Page Header -->
   <div class="page-header">
-    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 page-header-actions">
+    <div class="page-header-actions">
       <div>
         <a href="questionarios.html" class="btn-back">
           <i class="bi bi-arrow-left"></i> Voltar para Questionários

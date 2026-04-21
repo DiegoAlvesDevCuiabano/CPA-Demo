@@ -140,6 +140,7 @@ body {
   font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; color: var(--ink);
 }
 .page-header p { font-size: .82rem; color: var(--muted); margin: 0; }
+.page-header-actions { display: flex; align-items: center; gap: 8px; padding-top: 4px; }
 
 .content-area { padding: 1.5rem 2rem 2.5rem; }
 
@@ -282,7 +283,7 @@ body {
   .page-header { padding: 20px; }
   .content-area { padding: 16px; }
   .kpi-card { padding: 16px 18px; }
-  .page-header-actions { flex-direction: column; gap: 8px !important; }
+  .page-header-actions { flex-direction: column; gap: 8px; }
 }
 </style>
 </head>
@@ -369,7 +370,7 @@ body {
         <h1>Plano de Melhorias</h1>
         <p>Acompanhe as ações de melhoria vinculadas às fragilidades identificadas</p>
       </div>
-      <div class="page-header-actions" style="display:flex;align-items:center;gap:8px;padding-top:4px;">
+      <div class="page-header-actions">
         <select class="filter-dropdown">
           <option>Todas as Dimensões</option>
           <option>D1 — Missão e PDI</option>
