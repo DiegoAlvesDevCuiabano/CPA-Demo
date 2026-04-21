@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurar Publicação — CPA</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+:root {
+  --ink: #0e1a2b;
+  --ink-2: #1a2a42;
+  --navy: #14345c;
+  --navy-2: #0f2544;
+  --navy-soft: #3d5a85;
+  --paper: #f3efe4;
+  --paper-2: #eae4d4;
+  --paper-3: #ded5bf;
+  --line: #d5cbb2;
+  --line-strong: #14345c;
+  --muted: #6b6450;
+  --bordo: #7a2a2a;
+  --bordo-2: #9a3838;
+  --ocre: #c08a2a;
+  --oliva: #5a6b3a;
+  --bg-body: #f7f7f5;
+  --sidebar-width: 260px;
+  --navbar-height: 56px;
+  --radius: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  background: var(--bg-body);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── Navbar ── */
+.top-navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1040;
+  height: var(--navbar-height);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.navbar-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); }
+.navbar-right { display: flex; align-items: center; gap: 16px; }
+.navbar-right .notif-btn {
+  background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; position: relative;
+  transition: color .2s;
+}
+.navbar-right .notif-btn:hover { color: var(--navy); }
+.notif-dot {
+  position: absolute; top: -2px; right: -2px; width: 7px; height: 7px;
+  background: var(--bordo); border-radius: 50%;
+}
+.user-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--navy); color: var(--paper); font-size: .68rem; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-name { color: var(--ink); font-size: .8rem; font-weight: 500; }
+.user-name small { display: block; color: var(--muted); font-size: .65rem; font-weight: 400; }
+.sidebar-toggle {
+  display: none; background: none; border: none; color: var(--navy); font-size: 1.3rem; cursor: pointer;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: var(--navbar-height); left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 1030;
+  background: #fff;
+  border-right: 1px solid var(--line);
+  padding: 20px 0 16px;
+  overflow-y: auto;
+  transition: transform .3s ease;
+}
+.sidebar-cpa-label {
+  padding: 0 20px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--muted); line-height: 1.6;
+}
+.sidebar-section { padding: 0 12px; margin-bottom: 6px; }
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--muted); padding: 12px 14px 6px; font-weight: 500;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; margin: 1px 0;
+  color: var(--ink-2); font-size: .85rem; font-weight: 500;
+  text-decoration: none; border-radius: 6px; border-left: 3px solid transparent;
+  transition: all .2s;
+}
+.sidebar-item:hover { color: var(--ink); background: #f2f1ef; }
+.sidebar-item.active {
+  color: var(--navy); background: rgba(20,52,92,0.05);
+  border-left-color: var(--bordo); font-weight: 600;
+}
+.sidebar-item i { font-size: 1.05rem; width: 20px; text-align: center; opacity: .7; }
+.sidebar-item.active i { opacity: 1; }
+.sidebar-badge {
+  margin-left: auto; background: var(--navy); color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; padding: 2px 7px; border-radius: 10px;
+}
+.sidebar-divider { border-top: 1px solid var(--line); margin: 10px 12px; }
+
+/* ── Main content ── */
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* ── Page header ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-header-left { display: flex; align-items: center; gap: 1rem; }
+.page-header-left .back-btn {
+  width: 36px; height: 36px; border-radius: 6px; border: 1px solid var(--line);
+  background: var(--paper); display: flex; align-items: center; justify-content: center;
+  color: var(--muted); text-decoration: none; font-size: 1rem;
+  transition: all .15s;
+}
+.page-header-left .back-btn:hover { border-color: var(--navy); color: var(--navy); }
+.page-header-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 2px;
+}
+.page-header h1 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.25rem; font-weight: 700; margin: 0; color: var(--ink);
+}
+.page-header p { font-size: .82rem; color: var(--muted); margin: 0; }
+
+.content-area { padding: 1.5rem 2rem 2.5rem; max-width: 860px; }
+
+/* ── Cards ── */
+.card-custom {
+  background: #fff; border-radius: 6px;
+  border: 1px solid var(--line); overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.card-custom .card-header-custom {
+  padding: 16px 24px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-custom .card-header-custom h3 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--ink);
+}
+.card-custom .card-header-custom .card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--muted); letter-spacing: .5px;
+}
+.card-custom .card-body-custom { padding: 24px; }
+
+/* ── Buttons ── */
+.btn-primary-custom {
+  background: var(--navy); border: none; color: var(--paper); font-size: .8rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif; transition: all .15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary-custom:hover { background: var(--navy-2); color: var(--paper); }
+.btn-outline-custom {
+  border: 1.5px solid var(--line); color: var(--ink-2); font-size: .8rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 6px; background: #fff; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif; transition: all .15s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-outline-custom:hover { background: var(--paper); border-color: var(--navy-soft); }
+.btn-sm-custom {
+  font-size: .72rem; font-weight: 500; padding: 5px 10px; border-radius: 5px;
+  border: 1px solid var(--line); background: #fff; color: var(--navy); cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: all .15s;
+}
+.btn-sm-custom:hover { background: var(--paper); border-color: var(--navy-soft); }
+.btn-sm-custom.primary { background: var(--navy); border-color: var(--navy); color: var(--paper); }
+.btn-sm-custom.primary:hover { background: var(--navy-2); }
+
+/* ── Form elements ── */
+.form-label-custom {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--muted); font-weight: 500; margin-bottom: 6px;
+}
+.form-control-custom {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: .85rem; font-weight: 500;
+  padding: 0.55rem 0.9rem; border: 1.5px solid var(--line); border-radius: 6px;
+  background: #fff; color: var(--ink); width: 100%;
+  transition: all .15s;
+}
+.form-control-custom:focus {
+  outline: none; border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(20,52,92,.08);
+}
+.form-check-custom {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .82rem; color: var(--ink-2); cursor: pointer;
+}
+.form-check-custom input[type="checkbox"] {
+  width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer;
+}
+
+/* ── Info box ── */
+.info-box {
+  background: rgba(20,52,92,.04);
+  border: 1px solid rgba(20,52,92,.1);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 16px;
+}
+.info-box i { color: var(--navy-soft); font-size: .9rem; margin-top: 2px; flex-shrink: 0; }
+.info-box p {
+  font-size: .78rem; color: var(--ink-2); margin: 0; line-height: 1.5;
+}
+
+/* ── Table ── */
+.table-custom { font-size: .8rem; margin: 0; }
+.table-custom th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--muted); font-weight: 500; border-bottom-width: 1px;
+  padding: 10px 16px; white-space: nowrap;
+  background: var(--paper-2);
+}
+.table-custom td {
+  padding: 10px 16px; vertical-align: middle;
+  border-bottom: 1px solid var(--line);
+}
+.table-custom tbody tr:hover { background: rgba(20,52,92,0.02); }
+
+.link-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem; color: var(--navy-soft);
+  max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: inline-block;
+}
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .58rem; font-weight: 500; letter-spacing: .3px;
+  text-transform: uppercase;
+}
+.status-badge.gerado { background: rgba(90,107,58,.1); color: var(--oliva); }
+.status-badge.pendente { background: rgba(107,100,80,.1); color: var(--muted); }
+
+/* ── Textarea ── */
+.textarea-custom {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: .82rem; font-weight: 400;
+  padding: 0.75rem 1rem; border: 1.5px solid var(--line); border-radius: 6px;
+  background: #fff; color: var(--ink); width: 100%; resize: vertical;
+  line-height: 1.6;
+  transition: all .15s;
+}
+.textarea-custom:focus {
+  outline: none; border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(20,52,92,.08);
+}
+
+/* ── Email preview ── */
+.email-preview {
+  background: var(--bg-body);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 24px;
+  margin-top: 16px;
+}
+.email-preview-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 12px;
+}
+.email-preview-subject {
+  font-size: .88rem; font-weight: 700; color: var(--ink); margin-bottom: 8px;
+}
+.email-preview-body {
+  font-size: .8rem; color: var(--ink-2); line-height: 1.7;
+}
+.email-preview-body .email-link {
+  display: inline-block; margin-top: 8px;
+  background: var(--navy); color: var(--paper); padding: 6px 18px;
+  border-radius: 5px; font-size: .75rem; font-weight: 600;
+  text-decoration: none;
+}
+
+/* ── Collapse toggle ── */
+.collapse-toggle {
+  background: none; border: none; color: var(--navy); font-size: .8rem; font-weight: 600;
+  cursor: pointer; padding: 0; display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; font-family: 'Inter Tight', sans-serif;
+  transition: color .15s;
+}
+.collapse-toggle:hover { color: var(--navy-2); }
+.collapse-toggle i { font-size: .7rem; transition: transform .2s; }
+.collapse-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
+
+/* ── Summary list ── */
+.summary-list { list-style: none; padding: 0; }
+.summary-list li {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: .82rem;
+}
+.summary-list li:last-child { border-bottom: none; }
+.summary-label { color: var(--muted); font-weight: 500; }
+.summary-value {
+  font-weight: 600; color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem;
+}
+
+/* ── Warning box ── */
+.warning-box {
+  background: rgba(192,138,42,.06);
+  border: 1px solid rgba(192,138,42,.2);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 20px;
+}
+.warning-box i { color: var(--ocre); font-size: .9rem; margin-top: 2px; flex-shrink: 0; }
+.warning-box p {
+  font-size: .78rem; color: var(--ink-2); margin: 0; line-height: 1.5;
+}
+
+/* ── Footer actions ── */
+.footer-actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding-top: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.show { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .sidebar-toggle { display: block; }
+  .content-area { max-width: 100%; }
+}
+@media (max-width: 767px) {
+  .page-header { padding: 16px; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .content-area { padding: 16px; }
+  .link-text { max-width: 120px; }
+  .footer-actions { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="top-navbar">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+      <i class="bi bi-list"></i>
+    </button>
+    <a href="#" class="navbar-brand">
+      <svg viewBox="0 0 160 40" width="140" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <text x="20" y="26" font-family="Instrument Serif, Georgia, serif" font-size="11" font-weight="400" text-anchor="middle" fill="currentColor" letter-spacing="-0.3">CPA</text>
+        <line x1="13" y1="29" x2="27" y2="29" stroke="#7a2a2a" stroke-width="0.6"/>
+        <text x="46" y="23" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="17" fill="currentColor" letter-spacing="-0.3">CPA<tspan fill="#7a2a2a" font-style="normal">.</tspan></text>
+        <text x="47" y="34" font-family="JetBrains Mono, monospace" font-size="5.5" letter-spacing="2" fill="#6b6450">AVALIAÇÃO INSTITUCIONAL</text>
+      </svg>
+    </a>
+  </div>
+  <div class="navbar-right">
+    <button class="notif-btn">
+      <i class="bi bi-bell"></i>
+      <span class="notif-dot"></span>
+    </button>
+    <div class="user-area">
+      <div class="user-avatar">MC</div>
+      <div class="user-name">
+        Profa. Maria Costa
+        <small>Presidente CPA</small>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-cpa-label">Comissão Própria<br>de Avaliação</div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Menu Principal</div>
+    <a href="dashboard-cpa.html" class="sidebar-item">
+      <i class="bi bi-grid-1x2"></i> Dashboard
+    </a>
+    <a href="questionarios.html" class="sidebar-item active">
+      <i class="bi bi-file-earmark-text"></i> Questionários
+      <span class="sidebar-badge">3</span>
+    </a>
+    <a href="relatorio.html" class="sidebar-item">
+      <i class="bi bi-bar-chart-line"></i> Relatórios
+    </a>
+    <a href="melhorias.html" class="sidebar-item">
+      <i class="bi bi-clipboard-check"></i> Plano de Melhorias
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Administração</div>
+    <a href="ciclos.html" class="sidebar-item">
+      <i class="bi bi-arrow-repeat"></i> Ciclos
+    </a>
+    <a href="membros.html" class="sidebar-item">
+      <i class="bi bi-people"></i> Membros CPA
+    </a>
+    <a href="configuracoes.html" class="sidebar-item">
+      <i class="bi bi-gear"></i> Configurações
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <a href="login.html" class="sidebar-item">
+      <i class="bi bi-box-arrow-left"></i> Sair
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <a href="questionario-editor.html" class="back-btn"><i class="bi bi-arrow-left"></i></a>
+      <div>
+        <div class="page-header-label">Configurar Publicação</div>
+        <h1>Avaliação Institucional — Discentes</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Card 1: Período de Coleta -->
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h3><i class="bi bi-calendar3 me-2" style="font-size:.9rem;color:var(--navy-soft)"></i>Período de Coleta</h3>
+      </div>
+      <div class="card-body-custom">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label-custom">Data de início</label>
+            <input type="date" class="form-control-custom" value="2025-03-10">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label-custom">Data de encerramento</label>
+            <input type="date" class="form-control-custom" value="2025-06-30">
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <label class="form-check-custom">
+            <input type="checkbox" checked>
+            Encerrar automaticamente na data final
+          </label>
+        </div>
+        <div class="info-box">
+          <i class="bi bi-info-circle"></i>
+          <p>Ao atingir a data de encerramento, o questionário será fechado automaticamente e não aceitará novas respostas. Você pode reabrir manualmente a qualquer momento.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Segmentos e Links -->
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h3><i class="bi bi-link-45deg me-2" style="font-size:.9rem;color:var(--navy-soft)"></i>Segmentos e Links</h3>
+        <span class="card-meta">5 segmentos configurados</span>
+      </div>
+      <div class="card-body-custom p-0">
+        <div class="table-responsive">
+          <table class="table table-custom mb-0">
+            <thead>
+              <tr>
+                <th>Segmento</th>
+                <th>Link de Acesso</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600">Discentes</td>
+                <td><span class="link-text">https://cpa.app/r/aval-2025-disc-x7k9m2</span></td>
+                <td><span class="status-badge gerado"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>Gerado</span></td>
+                <td>
+                  <button class="btn-sm-custom" onclick="copyLink(this)" data-link="https://cpa.app/r/aval-2025-disc-x7k9m2"><i class="bi bi-clipboard"></i> Copiar link</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Docentes</td>
+                <td><span class="link-text">https://cpa.app/r/aval-2025-doc-p3j8n5</span></td>
+                <td><span class="status-badge gerado"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>Gerado</span></td>
+                <td>
+                  <button class="btn-sm-custom" onclick="copyLink(this)" data-link="https://cpa.app/r/aval-2025-doc-p3j8n5"><i class="bi bi-clipboard"></i> Copiar link</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">TAEs</td>
+                <td><span class="link-text" style="color:var(--muted);font-style:italic">Link ainda não gerado</span></td>
+                <td><span class="status-badge pendente"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>Pendente</span></td>
+                <td>
+                  <button class="btn-sm-custom primary"><i class="bi bi-plus-circle"></i> Gerar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Gestores</td>
+                <td><span class="link-text" style="color:var(--muted);font-style:italic">Link ainda não gerado</span></td>
+                <td><span class="status-badge pendente"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>Pendente</span></td>
+                <td>
+                  <button class="btn-sm-custom primary"><i class="bi bi-plus-circle"></i> Gerar</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Externos</td>
+                <td><span class="link-text" style="color:var(--muted);font-style:italic">Link ainda não gerado</span></td>
+                <td><span class="status-badge pendente"><span style="width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block"></span>Pendente</span></td>
+                <td>
+                  <button class="btn-sm-custom primary"><i class="bi bi-plus-circle"></i> Gerar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Mensagem de Convite -->
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h3><i class="bi bi-envelope me-2" style="font-size:.9rem;color:var(--navy-soft)"></i>Mensagem de Convite</h3>
+      </div>
+      <div class="card-body-custom">
+        <div class="mb-3">
+          <label class="form-label-custom">Assunto do e-mail</label>
+          <input type="text" class="form-control-custom" value="Participe da Avaliação Institucional 2025 — CPA">
+        </div>
+        <div class="mb-3">
+          <label class="form-label-custom">Corpo da mensagem</label>
+          <textarea class="textarea-custom" rows="6">Prezado(a) membro da comunidade acadêmica,
+
+A Comissão Própria de Avaliação (CPA) convida você a participar da Avaliação Institucional 2025. Sua opinião é fundamental para a melhoria contínua da nossa instituição.
+
+O questionário é anônimo e leva aproximadamente 15 minutos para ser respondido. O prazo de participação vai até 30/06/2025.
+
+Clique no botão abaixo para acessar o questionário:</textarea>
+        </div>
+
+        <!-- Collapse toggle -->
+        <button class="collapse-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#emailPreviewCollapse" aria-expanded="false">
+          <i class="bi bi-chevron-down"></i> Visualizar preview do e-mail
+        </button>
+
+        <div class="collapse" id="emailPreviewCollapse">
+          <div class="email-preview">
+            <div class="email-preview-label">Preview do e-mail</div>
+            <div class="email-preview-subject">Participe da Avaliação Institucional 2025 — CPA</div>
+            <div class="email-preview-body">
+              Prezado(a) membro da comunidade acadêmica,<br><br>
+              A Comissão Própria de Avaliação (CPA) convida você a participar da Avaliação Institucional 2025. Sua opinião é fundamental para a melhoria contínua da nossa instituição.<br><br>
+              O questionário é anônimo e leva aproximadamente 15 minutos para ser respondido. O prazo de participação vai até 30/06/2025.<br><br>
+              Clique no botão abaixo para acessar o questionário:<br>
+              <a href="#" class="email-link">Responder Questionário</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Resumo -->
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h3><i class="bi bi-check2-square me-2" style="font-size:.9rem;color:var(--navy-soft)"></i>Resumo</h3>
+      </div>
+      <div class="card-body-custom">
+        <ul class="summary-list">
+          <li>
+            <span class="summary-label">Questionário</span>
+            <span class="summary-value">Avaliação Institucional — Discentes</span>
+          </li>
+          <li>
+            <span class="summary-label">Segmentos ativos</span>
+            <span class="summary-value">2 de 5 (links gerados)</span>
+          </li>
+          <li>
+            <span class="summary-label">Total de perguntas</span>
+            <span class="summary-value">41 perguntas em 10 seções</span>
+          </li>
+          <li>
+            <span class="summary-label">Período de coleta</span>
+            <span class="summary-value">10/03/2025 — 30/06/2025</span>
+          </li>
+          <li>
+            <span class="summary-label">Tempo estimado de resposta</span>
+            <span class="summary-value">~15 minutos</span>
+          </li>
+        </ul>
+
+        <div class="warning-box">
+          <i class="bi bi-exclamation-triangle"></i>
+          <p><strong>Atenção:</strong> Após publicar, o questionário não poderá ser editado. Certifique-se de que todas as perguntas e configurações estão corretas antes de prosseguir.</p>
+        </div>
+
+        <div class="footer-actions">
+          <button class="btn-outline-custom"><i class="bi bi-floppy"></i> Salvar Rascunho</button>
+          <button class="btn-primary-custom"><i class="bi bi-send"></i> Publicar Agora</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function copyLink(btn) {
+  const link = btn.getAttribute('data-link');
+  navigator.clipboard.writeText(link).then(() => {
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-check2"></i> Copiado!';
+    btn.style.borderColor = '#5a6b3a';
+    btn.style.color = '#5a6b3a';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

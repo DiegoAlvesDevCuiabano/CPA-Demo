@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respostas — CPA</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2314345c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='400' text-anchor='middle' fill='%23f3efe4' letter-spacing='-1'%3ECPA%3C/text%3E%3Cline x1='22' y1='47' x2='42' y2='47' stroke='%237a2a2a' stroke-width='1.2'/%3E%3C/svg%3E">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --ink: #0e1a2b;
+  --ink-2: #1a2a42;
+  --navy: #14345c;
+  --navy-2: #0f2544;
+  --navy-soft: #3d5a85;
+  --paper: #f3efe4;
+  --paper-2: #eae4d4;
+  --paper-3: #ded5bf;
+  --line: #d5cbb2;
+  --line-strong: #14345c;
+  --muted: #6b6450;
+  --bordo: #7a2a2a;
+  --bordo-2: #9a3838;
+  --ocre: #c08a2a;
+  --oliva: #5a6b3a;
+  --bg-body: #f7f7f5;
+  --sidebar-width: 260px;
+  --navbar-height: 56px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  background: var(--bg-body);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── Navbar ── */
+.top-navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1040;
+  height: var(--navbar-height);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+.navbar-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); }
+.navbar-right { display: flex; align-items: center; gap: 16px; }
+.navbar-right .notif-btn {
+  background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; position: relative;
+  transition: color .2s;
+}
+.navbar-right .notif-btn:hover { color: var(--navy); }
+.notif-dot {
+  position: absolute; top: -2px; right: -2px; width: 7px; height: 7px;
+  background: var(--bordo); border-radius: 50%;
+}
+.user-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--navy); color: var(--paper); font-size: .68rem; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-name { color: var(--ink); font-size: .8rem; font-weight: 500; }
+.user-name small { display: block; color: var(--muted); font-size: .65rem; font-weight: 400; }
+.sidebar-toggle {
+  display: none; background: none; border: none; color: var(--navy); font-size: 1.3rem; cursor: pointer;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: var(--navbar-height); left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 1030;
+  background: #fff;
+  border-right: 1px solid var(--line);
+  padding: 20px 0 16px;
+  overflow-y: auto;
+  transition: transform .3s ease;
+}
+.sidebar-cpa-label {
+  padding: 0 20px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--muted); line-height: 1.6;
+}
+.sidebar-section { padding: 0 12px; margin-bottom: 6px; }
+.sidebar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--muted); padding: 12px 14px 6px; font-weight: 500;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 14px; margin: 1px 0;
+  color: var(--ink-2); font-size: .85rem; font-weight: 500;
+  text-decoration: none; border-radius: 6px; border-left: 3px solid transparent;
+  transition: all .2s;
+}
+.sidebar-item:hover {
+  color: var(--ink); background: #f2f1ef;
+}
+.sidebar-item.active {
+  color: var(--navy); background: rgba(20,52,92,0.05);
+  border-left-color: var(--bordo); font-weight: 600;
+}
+.sidebar-item i { font-size: 1.05rem; width: 20px; text-align: center; opacity: .7; }
+.sidebar-item.active i { opacity: 1; }
+.sidebar-badge {
+  margin-left: auto; background: var(--navy); color: var(--paper);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; padding: 2px 7px; border-radius: 10px;
+}
+.sidebar-divider { border-top: 1px solid var(--line); margin: 10px 12px; }
+
+/* ── Main content ── */
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* ── Page header ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 1.5rem 2rem;
+}
+.page-header-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--muted); margin-bottom: 4px;
+}
+.page-header h1 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; color: var(--ink);
+}
+.page-header p { font-size: .82rem; color: var(--muted); margin: 0; }
+
+.content-area { padding: 1.5rem 2rem 2.5rem; }
+
+/* ── KPI Cards ── */
+.kpi-card {
+  background: #fff; border-radius: 6px; padding: 22px 24px;
+  border: 1px solid var(--line);
+  transition: box-shadow .15s;
+}
+.kpi-card:hover { box-shadow: 0 4px 16px rgba(14,26,43,0.06); }
+.kpi-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--muted); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.kpi-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem; font-weight: 600; line-height: 1.1;
+  color: var(--navy);
+}
+.kpi-underline {
+  width: 32px; height: 2px; background: var(--bordo); margin-top: 8px; border-radius: 1px;
+}
+.kpi-sub {
+  font-size: .7rem; color: var(--muted); margin-top: 6px;
+}
+
+/* ── Cards ── */
+.card-custom {
+  background: #fff; border-radius: 6px;
+  border: 1px solid var(--line); overflow: hidden;
+}
+.card-custom .card-header-custom {
+  padding: 16px 24px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-custom .card-header-custom h3 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--ink);
+}
+.card-custom .card-header-custom .card-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--muted); letter-spacing: .5px;
+}
+.card-custom .card-body-custom { padding: 24px; }
+
+/* ── Buttons ── */
+.btn-primary-custom {
+  background: var(--navy); border: none; color: var(--paper); font-size: .8rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  transition: all .15s;
+}
+.btn-primary-custom:hover { background: var(--navy-2); color: var(--paper); }
+.btn-outline-custom {
+  border: 1.5px solid var(--line); color: var(--ink-2); font-size: .8rem; font-weight: 600;
+  padding: 0.5rem 1.25rem; border-radius: 6px; background: #fff; cursor: pointer;
+  font-family: 'Inter Tight', sans-serif;
+  transition: all .15s;
+}
+.btn-outline-custom:hover { background: var(--paper); border-color: var(--navy-soft); }
+
+/* ── Back button ── */
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: .78rem; font-weight: 500; color: var(--muted);
+  text-decoration: none; border: none; background: none; cursor: pointer;
+  transition: color .15s;
+  margin-bottom: 8px;
+}
+.btn-back:hover { color: var(--navy); }
+.btn-back i { font-size: .9rem; }
+
+/* ── Likert stacked bars ── */
+.likert-row { margin-bottom: 18px; }
+.likert-row:last-child { margin-bottom: 0; }
+.likert-question {
+  font-size: .8rem; font-weight: 500; color: var(--ink-2);
+  margin-bottom: 6px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+.likert-bar-track {
+  display: flex; height: 28px; border-radius: 4px; overflow: hidden;
+  background: var(--paper-2);
+}
+.likert-bar-segment {
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; color: #fff;
+  min-width: 0;
+  transition: width .4s ease;
+}
+.likert-bar-segment.dt { background: var(--bordo); }
+.likert-bar-segment.d  { background: var(--ocre); }
+.likert-bar-segment.n  { background: var(--navy-soft); }
+.likert-bar-segment.c  { background: #5a8fbe; }
+.likert-bar-segment.ct { background: var(--navy); }
+
+.likert-legend {
+  display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap;
+}
+.likert-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--muted);
+}
+.likert-legend-dot {
+  width: 10px; height: 10px; border-radius: 2px;
+}
+
+/* ── Text responses ── */
+.text-response {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.text-response:last-child { border-bottom: none; }
+.text-response-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.segment-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500; letter-spacing: .3px;
+  background: rgba(20,52,92,.08); color: var(--navy);
+}
+.text-response-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; color: var(--muted);
+}
+.text-response-body {
+  font-size: .84rem; color: var(--ink-2); line-height: 1.6;
+}
+
+/* ── Filter select ── */
+.filter-select {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: .78rem; font-weight: 500;
+  border: 1.5px solid var(--line); border-radius: 6px;
+  padding: 6px 32px 6px 12px;
+  color: var(--ink-2); background: #fff;
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%236b6450' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color .15s;
+}
+.filter-select:focus {
+  outline: none; border-color: var(--navy-soft);
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.show { transform: translateX(0); }
+  .main-content { margin-left: 0; }
+  .sidebar-toggle { display: block; }
+}
+@media (max-width: 767px) {
+  .page-header { padding: 20px; }
+  .content-area { padding: 16px; }
+  .kpi-card { padding: 16px 18px; }
+  .page-header-actions { flex-direction: column; align-items: flex-start !important; gap: 10px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="top-navbar">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="sidebar-toggle" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+      <i class="bi bi-list"></i>
+    </button>
+    <a href="#" class="navbar-brand">
+      <svg viewBox="0 0 160 40" width="140" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <text x="20" y="26" font-family="Instrument Serif, Georgia, serif" font-size="11" font-weight="400" text-anchor="middle" fill="currentColor" letter-spacing="-0.3">CPA</text>
+        <line x1="13" y1="29" x2="27" y2="29" stroke="#7a2a2a" stroke-width="0.6"/>
+        <text x="46" y="23" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="17" fill="currentColor" letter-spacing="-0.3">CPA<tspan fill="#7a2a2a" font-style="normal">.</tspan></text>
+        <text x="47" y="34" font-family="JetBrains Mono, monospace" font-size="5.5" letter-spacing="2" fill="#6b6450">AVALIAÇÃO INSTITUCIONAL</text>
+      </svg>
+    </a>
+  </div>
+  <div class="navbar-right">
+    <button class="notif-btn">
+      <i class="bi bi-bell"></i>
+      <span class="notif-dot"></span>
+    </button>
+    <div class="user-area">
+      <div class="user-avatar">MC</div>
+      <div class="user-name">
+        Profa. Maria Costa
+        <small>Presidente CPA</small>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-cpa-label">Comissão Própria<br>de Avaliação</div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Menu Principal</div>
+    <a href="dashboard-cpa.html" class="sidebar-item">
+      <i class="bi bi-grid-1x2"></i> Dashboard
+    </a>
+    <a href="questionarios.html" class="sidebar-item active">
+      <i class="bi bi-file-earmark-text"></i> Questionários
+      <span class="sidebar-badge">3</span>
+    </a>
+    <a href="relatorio.html" class="sidebar-item">
+      <i class="bi bi-bar-chart-line"></i> Relatórios
+    </a>
+    <a href="#" class="sidebar-item">
+      <i class="bi bi-clipboard-check"></i> Plano de Melhorias
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Administração</div>
+    <a href="#" class="sidebar-item">
+      <i class="bi bi-arrow-repeat"></i> Ciclos
+    </a>
+    <a href="#" class="sidebar-item">
+      <i class="bi bi-people"></i> Membros CPA
+    </a>
+    <a href="#" class="sidebar-item">
+      <i class="bi bi-gear"></i> Configurações
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <a href="login.html" class="sidebar-item">
+      <i class="bi bi-box-arrow-left"></i> Sair
+    </a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 page-header-actions">
+      <div>
+        <a href="questionarios.html" class="btn-back">
+          <i class="bi bi-arrow-left"></i> Voltar para Questionários
+        </a>
+        <h1>Respostas</h1>
+        <p>Avaliação Institucional — Discentes</p>
+      </div>
+      <div class="d-flex align-items-center gap-2 flex-wrap" style="margin-top:8px;">
+        <select class="filter-select">
+          <option>Todos os segmentos</option>
+          <option selected>Discentes</option>
+          <option>Docentes</option>
+          <option>TAEs</option>
+          <option>Gestores</option>
+          <option>Comunidade externa</option>
+        </select>
+        <button class="btn-outline-custom"><i class="bi bi-filetype-csv me-1"></i>CSV</button>
+        <button class="btn-outline-custom"><i class="bi bi-file-earmark-spreadsheet me-1"></i>Excel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Respostas</div>
+          <div class="kpi-value">812</div>
+          <div class="kpi-underline"></div>
+          <div class="kpi-sub">respostas coletadas</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Participação</div>
+          <div class="kpi-value">58%</div>
+          <div class="kpi-underline"></div>
+          <div class="kpi-sub">dos discentes</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Média Geral</div>
+          <div class="kpi-value">3.8</div>
+          <div class="kpi-underline"></div>
+          <div class="kpi-sub">escala Likert 1–5</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Tempo Médio</div>
+          <div class="kpi-value">6min</div>
+          <div class="kpi-underline"></div>
+          <div class="kpi-sub">para completar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribuição por Pergunta -->
+    <div class="card-custom mb-4">
+      <div class="card-header-custom">
+        <h3>Distribuição por Pergunta</h3>
+        <span class="card-meta">Escala Likert 5 pontos</span>
+      </div>
+      <div class="card-body-custom">
+        <div id="likertContainer"></div>
+        <div class="likert-legend">
+          <div class="likert-legend-item"><div class="likert-legend-dot" style="background:var(--bordo)"></div>Discordo Totalmente</div>
+          <div class="likert-legend-item"><div class="likert-legend-dot" style="background:var(--ocre)"></div>Discordo</div>
+          <div class="likert-legend-item"><div class="likert-legend-dot" style="background:var(--navy-soft)"></div>Neutro</div>
+          <div class="likert-legend-item"><div class="likert-legend-dot" style="background:#5a8fbe"></div>Concordo</div>
+          <div class="likert-legend-item"><div class="likert-legend-dot" style="background:var(--navy)"></div>Concordo Totalmente</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Respostas de Texto Livre -->
+    <div class="card-custom mb-4">
+      <div class="card-header-custom">
+        <h3>Respostas de Texto Livre</h3>
+        <span class="card-meta">24 respostas</span>
+      </div>
+      <div class="card-body-custom">
+        <div class="text-response">
+          <div class="text-response-meta">
+            <span class="segment-badge">Discente</span>
+            <span class="text-response-time">15 abr 2026 · 14:32</span>
+          </div>
+          <div class="text-response-body">A biblioteca precisa de mais horários de funcionamento, especialmente nos fins de semana. Muitos alunos trabalham durante a semana e não conseguem acessar o acervo em horários comerciais.</div>
+        </div>
+        <div class="text-response">
+          <div class="text-response-meta">
+            <span class="segment-badge">Discente</span>
+            <span class="text-response-time">14 abr 2026 · 09:18</span>
+          </div>
+          <div class="text-response-body">Parabenizo a gestão pela transparência nas decisões administrativas. A comunicação via portal melhorou muito neste semestre.</div>
+        </div>
+        <div class="text-response">
+          <div class="text-response-meta">
+            <span class="segment-badge">Discente</span>
+            <span class="text-response-time">13 abr 2026 · 22:05</span>
+          </div>
+          <div class="text-response-body">Os laboratórios de informática estão com equipamentos defasados. Vários computadores não funcionam e o Wi-Fi é instável nas salas de aula do bloco B.</div>
+        </div>
+        <div class="text-response">
+          <div class="text-response-meta">
+            <span class="segment-badge">Discente</span>
+            <span class="text-response-time">12 abr 2026 · 16:47</span>
+          </div>
+          <div class="text-response-body">Seria interessante ter mais opções de atividades extracurriculares e programas de extensão voltados à comunidade. Isso enriqueceria a formação dos alunos.</div>
+        </div>
+        <div class="text-response">
+          <div class="text-response-meta">
+            <span class="segment-badge">Discente</span>
+            <span class="text-response-time">11 abr 2026 · 10:23</span>
+          </div>
+          <div class="text-response-body">O processo de matrícula online ainda apresenta falhas. No último período, o sistema ficou fora do ar no dia da matrícula e muitos alunos perderam vagas em disciplinas.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evolução Diária -->
+    <div class="card-custom mb-4">
+      <div class="card-header-custom">
+        <h3>Evolução Diária</h3>
+        <span class="card-meta">Últimos 30 dias</span>
+      </div>
+      <div class="card-body-custom">
+        <canvas id="dailyChart" style="max-height:280px;"></canvas>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Likert stacked bars
+const perguntas = [
+  { texto: 'A instituição comunica de forma clara sua missão, visão e valores?', dt: 4, d: 8, n: 15, c: 42, ct: 31 },
+  { texto: 'Os conteúdos das disciplinas são atualizados e relevantes para a formação profissional?', dt: 3, d: 10, n: 18, c: 38, ct: 31 },
+  { texto: 'A infraestrutura física (salas, laboratórios, biblioteca) atende às necessidades acadêmicas?', dt: 12, d: 18, n: 22, c: 30, ct: 18 },
+  { texto: 'Os canais de comunicação entre alunos e gestão são acessíveis e eficientes?', dt: 8, d: 14, n: 20, c: 35, ct: 23 },
+  { texto: 'A instituição promove ações de responsabilidade social e extensão comunitária?', dt: 5, d: 11, n: 24, c: 36, ct: 24 }
+];
+
+const container = document.getElementById('likertContainer');
+perguntas.forEach((p, i) => {
+  const row = document.createElement('div');
+  row.className = 'likert-row';
+  row.innerHTML = `
+    <div class="likert-question" title="${p.texto}"><strong style="font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);margin-right:6px;">P${i + 1}</strong>${p.texto}</div>
+    <div class="likert-bar-track">
+      <div class="likert-bar-segment dt" style="width:${p.dt}%">${p.dt >= 5 ? p.dt + '%' : ''}</div>
+      <div class="likert-bar-segment d" style="width:${p.d}%">${p.d >= 5 ? p.d + '%' : ''}</div>
+      <div class="likert-bar-segment n" style="width:${p.n}%">${p.n >= 5 ? p.n + '%' : ''}</div>
+      <div class="likert-bar-segment c" style="width:${p.c}%">${p.c >= 5 ? p.c + '%' : ''}</div>
+      <div class="likert-bar-segment ct" style="width:${p.ct}%">${p.ct >= 5 ? p.ct + '%' : ''}</div>
+    </div>
+  `;
+  container.appendChild(row);
+});
+
+// Daily evolution chart
+const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+
+// Generate 30 days of labels and data
+const labels = [];
+const data = [];
+const hoje = new Date(2026, 3, 20); // 20 abr 2026
+for (let i = 29; i >= 0; i--) {
+  const d = new Date(hoje);
+  d.setDate(d.getDate() - i);
+  labels.push(d.getDate() + '/' + (d.getMonth() + 1));
+  // Simulate realistic response curve (ramp up, plateau, spike near end)
+  let val;
+  if (i > 25) val = Math.floor(Math.random() * 10 + 5);
+  else if (i > 18) val = Math.floor(Math.random() * 15 + 18);
+  else if (i > 10) val = Math.floor(Math.random() * 20 + 25);
+  else if (i > 5) val = Math.floor(Math.random() * 15 + 35);
+  else if (i > 2) val = Math.floor(Math.random() * 10 + 20);
+  else val = Math.floor(Math.random() * 8 + 8);
+  data.push(val);
+}
+
+new Chart(dailyCtx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Respostas/dia',
+      data: data,
+      borderColor: '#14345c',
+      backgroundColor: 'rgba(20,52,92,.06)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: '#14345c',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 1.5,
+      pointRadius: 3,
+      pointHoverRadius: 5
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    scales: {
+      x: {
+        grid: { color: 'rgba(20,52,92,.04)' },
+        ticks: {
+          font: { size: 10, family: 'JetBrains Mono' },
+          color: '#6b6450',
+          maxRotation: 45,
+          autoSkip: true,
+          maxTicksLimit: 15
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: 'rgba(20,52,92,.04)' },
+        ticks: {
+          font: { size: 10, family: 'JetBrains Mono' },
+          color: '#6b6450',
+          stepSize: 10
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          font: { size: 11, family: 'Inter Tight' },
+          padding: 16,
+          usePointStyle: true,
+          pointStyle: 'circle',
+          color: '#1a2a42'
+        }
+      },
+      tooltip: {
+        backgroundColor: '#0e1a2b',
+        titleFont: { family: 'Inter Tight', size: 12 },
+        bodyFont: { family: 'JetBrains Mono', size: 11 },
+        padding: 10,
+        cornerRadius: 6
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
