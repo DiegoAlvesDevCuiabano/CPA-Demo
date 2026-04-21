@@ -14,6 +14,8 @@
       --line: #d5cbb2;
       --bordo: #7a2a2a;
       --muted: #6b6450;
+      --oliva: #5a6b3a;
+      --ocre: #c08a2a;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -21,20 +23,17 @@
       background: #f7f7f5;
       color: var(--ink);
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 3rem 2rem;
     }
     .container {
-      max-width: 720px;
-      width: 100%;
-      padding: 3rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
     }
     .brand {
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
     }
     .brand svg { flex-shrink: 0; }
     .brand-info h1 {
@@ -66,21 +65,21 @@
     }
     .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
       margin-bottom: 2.5rem;
     }
     .card {
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 6px;
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
       text-decoration: none;
       color: var(--ink);
       transition: all 0.2s;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.25rem;
     }
     .card:hover {
       border-color: var(--navy);
@@ -89,7 +88,7 @@
     }
     .card .label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.58rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--muted);
@@ -97,14 +96,58 @@
     .card .name {
       font-family: 'Inter Tight', sans-serif;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
     }
     .card .desc {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       color: var(--muted);
       line-height: 1.4;
     }
     .card.highlight { border-left: 3px solid var(--bordo); }
+    .card.new { border-left: 3px solid var(--oliva); }
+
+    .badge-new {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: rgba(90,107,58,.1);
+      color: var(--oliva);
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      padding: 1rem 1.25rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
     .footer {
       text-align: center;
@@ -115,9 +158,13 @@
       margin-top: 1rem;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
       .grid { grid-template-columns: 1fr; }
-      .container { padding: 2rem 1.25rem; }
+      body { padding: 2rem 1.25rem; }
+      .stats { flex-wrap: wrap; gap: 1rem; }
     }
   </style>
 </head>
@@ -137,6 +184,26 @@
       </div>
     </div>
 
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-value">26</span>
+        <span class="stat-label">Telas totais</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">7</span>
+        <span class="stat-label">Públicas</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">19</span>
+        <span class="stat-label">App / Admin</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">6</span>
+        <span class="stat-label">Fluxos</span>
+      </div>
+    </div>
+
+    <!-- Públicas -->
     <div class="subtitle">Páginas públicas</div>
     <div class="grid">
       <a href="landing.html" class="card highlight">
@@ -149,11 +216,6 @@
         <span class="name">Planos e Preços</span>
         <span class="desc">Institucional · Universidade · Enterprise</span>
       </a>
-      <a href="login.html" class="card">
-        <span class="label">Autenticação</span>
-        <span class="name">Login</span>
-        <span class="desc">Acesso dos membros CPA</span>
-      </a>
       <a href="responder.html" class="card">
         <span class="label">Respondente</span>
         <span class="name">Questionário Público</span>
@@ -161,27 +223,143 @@
       </a>
     </div>
 
+    <!-- Auth & Onboarding -->
+    <div class="subtitle">Autenticação e Onboarding</div>
+    <div class="grid">
+      <a href="login.html" class="card">
+        <span class="label">Auth</span>
+        <span class="name">Login</span>
+        <span class="desc">Acesso dos membros CPA</span>
+      </a>
+      <a href="cadastro.html" class="card new">
+        <span class="label">Auth</span>
+        <span class="name">Cadastro <span class="badge-new">novo</span></span>
+        <span class="desc">Registro de instituição</span>
+      </a>
+      <a href="recuperar-senha.html" class="card new">
+        <span class="label">Auth</span>
+        <span class="name">Recuperar Senha <span class="badge-new">novo</span></span>
+        <span class="desc">Envio de link por email</span>
+      </a>
+      <a href="onboarding.html" class="card new">
+        <span class="label">Onboarding</span>
+        <span class="name">Wizard Inicial <span class="badge-new">novo</span></span>
+        <span class="desc">IES → Ciclo → Equipe CPA</span>
+      </a>
+    </div>
+
+    <!-- App -->
     <div class="subtitle">Área logada — Comissão Própria de Avaliação</div>
     <div class="grid">
       <a href="dashboard-cpa.html" class="card highlight">
-        <span class="label">App</span>
-        <span class="name">Dashboard</span>
+        <span class="label">Dashboard</span>
+        <span class="name">Dashboard CPA</span>
         <span class="desc">KPIs · Radar SINAES · Dimensões</span>
       </a>
       <a href="questionarios.html" class="card">
-        <span class="label">App</span>
-        <span class="name">Questionários</span>
-        <span class="desc">Gestão dos instrumentos por segmento</span>
+        <span class="label">Questionários</span>
+        <span class="name">Listagem</span>
+        <span class="desc">Gestão dos instrumentos</span>
+      </a>
+      <a href="questionario-editor.html" class="card new">
+        <span class="label">Questionários</span>
+        <span class="name">Editor / Builder <span class="badge-new">novo</span></span>
+        <span class="desc">Seções · Perguntas · Tipos</span>
+      </a>
+      <a href="questionario-preview.html" class="card new">
+        <span class="label">Questionários</span>
+        <span class="name">Preview <span class="badge-new">novo</span></span>
+        <span class="desc">Visualização do respondente</span>
+      </a>
+      <a href="questionario-publicar.html" class="card new">
+        <span class="label">Questionários</span>
+        <span class="name">Publicação <span class="badge-new">novo</span></span>
+        <span class="desc">Datas · Links · Convite</span>
+      </a>
+      <a href="questionario-respostas.html" class="card new">
+        <span class="label">Questionários</span>
+        <span class="name">Respostas <span class="badge-new">novo</span></span>
+        <span class="desc">Distribuição · Texto livre · Gráficos</span>
       </a>
       <a href="relatorio.html" class="card">
-        <span class="label">App</span>
-        <span class="name">Relatório RAI</span>
+        <span class="label">Relatório</span>
+        <span class="name">RAI</span>
         <span class="desc">Documento de autoavaliação · MEC</span>
+      </a>
+      <a href="melhorias.html" class="card new">
+        <span class="label">Melhorias</span>
+        <span class="name">Plano de Melhorias <span class="badge-new">novo</span></span>
+        <span class="desc">Ações · Status · Responsáveis</span>
+      </a>
+      <a href="melhoria-form.html" class="card new">
+        <span class="label">Melhorias</span>
+        <span class="name">Nova Ação <span class="badge-new">novo</span></span>
+        <span class="desc">Vincular fragilidade · Prazo</span>
+      </a>
+    </div>
+
+    <!-- Administração -->
+    <div class="subtitle">Administração</div>
+    <div class="grid">
+      <a href="ciclos.html" class="card new">
+        <span class="label">Ciclos</span>
+        <span class="name">Listagem de Ciclos <span class="badge-new">novo</span></span>
+        <span class="desc">2024-2026 · 2021-2023 · ...</span>
+      </a>
+      <a href="ciclo-form.html" class="card new">
+        <span class="label">Ciclos</span>
+        <span class="name">Novo Ciclo <span class="badge-new">novo</span></span>
+        <span class="desc">Nome · Período · Descrição</span>
+      </a>
+      <a href="membros.html" class="card new">
+        <span class="label">Membros</span>
+        <span class="name">Listagem de Membros <span class="badge-new">novo</span></span>
+        <span class="desc">Coordenador · Membros · Segmentos</span>
+      </a>
+      <a href="membro-form.html" class="card new">
+        <span class="label">Membros</span>
+        <span class="name">Adicionar Membro <span class="badge-new">novo</span></span>
+        <span class="desc">Nome · Email · Função · Segmento</span>
+      </a>
+      <a href="configuracoes.html" class="card new">
+        <span class="label">Configurações</span>
+        <span class="name">Instituição <span class="badge-new">novo</span></span>
+        <span class="desc">Logo · Dados · Endereço</span>
+      </a>
+      <a href="configuracoes-lembretes.html" class="card new">
+        <span class="label">Configurações</span>
+        <span class="name">Lembretes <span class="badge-new">novo</span></span>
+        <span class="desc">Email · SMS · Templates</span>
+      </a>
+      <a href="configuracoes-assinatura.html" class="card new">
+        <span class="label">Configurações</span>
+        <span class="name">Assinatura <span class="badge-new">novo</span></span>
+        <span class="desc">Plano · Pagamentos · Faturamento</span>
+      </a>
+    </div>
+
+    <!-- Estados do Respondente -->
+    <div class="subtitle">Estados do Respondente</div>
+    <div class="grid">
+      <a href="resposta-enviada.html" class="card new">
+        <span class="label">Respondente</span>
+        <span class="name">Resposta Enviada <span class="badge-new">novo</span></span>
+        <span class="desc">Agradecimento pós-envio</span>
+      </a>
+      <a href="questionario-encerrado.html" class="card new">
+        <span class="label">Respondente</span>
+        <span class="name">Encerrado <span class="badge-new">novo</span></span>
+        <span class="desc">Prazo expirado</span>
+      </a>
+      <a href="questionario-respondido.html" class="card new">
+        <span class="label">Respondente</span>
+        <span class="name">Já Respondido <span class="badge-new">novo</span></span>
+        <span class="desc">Resposta duplicada</span>
       </a>
     </div>
 
     <div class="footer">
-      Design v3 · Rev. 3 · Abril 2026
+      Design v3 · Rev. 4 · Abril 2026 · 26 telas · 6 fluxos
     </div>
   </div>
 </body>
