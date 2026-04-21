@@ -9,7 +9,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
   <style>
     :root {
@@ -27,8 +29,7 @@
       --ocre: #c08a2a;
       --oliva: #5a6b3a;
       --white: #ffffff;
-      --danger: #9a3838;
-      --success: #5a6b3a;
+      --radius: 8px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,12 +39,24 @@
       color: var(--ink);
       background: #f7f7f5;
       -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
     }
 
     .container {
       max-width: 1120px;
       margin: 0 auto;
       padding: 0 clamp(1.25rem, 4vw, 5rem);
+    }
+
+    /* ── Animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ── Navbar ── */
@@ -95,12 +108,11 @@
       font-size: 0.875rem;
       border-radius: 4px;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.15s;
       cursor: pointer;
     }
-    .navbar-links .btn-nav-login:hover { background: var(--ink-2); }
+    .navbar-links .btn-nav-login:hover { background: var(--ink-2); transform: translateY(-1px); }
 
-    /* Mobile menu */
     .navbar-toggle {
       display: none;
       background: none;
@@ -132,44 +144,65 @@
     /* ── Hero ── */
     .hero {
       background: var(--paper);
-      padding: 6rem 0 5rem;
+      padding: 5rem 0 4.5rem;
       border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
     }
-    .hero-inner {
-      max-width: 720px;
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(20, 52, 92, 0.04) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
     }
     .hero-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--bordo);
-      border-left: 3px solid var(--bordo);
-      padding: 0.3rem 0.75rem;
-      margin-bottom: 2rem;
-      line-height: 1.4;
+      background: rgba(122, 42, 42, 0.06);
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.75rem;
     }
+    .hero-badge i { font-size: 0.85rem; }
     .hero h1 {
       font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      line-height: 1.12;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      line-height: 1.1;
       color: var(--navy);
       margin-bottom: 1.5rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.025em;
     }
     .hero h1 em {
+      font-family: 'Instrument Serif', Georgia, serif;
       font-style: italic;
+      font-weight: 400;
       color: var(--bordo);
     }
     .hero-subtitle {
-      font-size: 1.125rem;
-      line-height: 1.7;
+      font-size: 1.1rem;
+      line-height: 1.75;
       color: var(--muted);
-      max-width: 600px;
-      margin-bottom: 2.5rem;
+      max-width: 520px;
+      margin-bottom: 2.25rem;
     }
     .hero-subtitle strong {
       color: var(--ink);
@@ -180,42 +213,362 @@
       gap: 1rem;
       flex-wrap: wrap;
       align-items: center;
+      margin-bottom: 1rem;
     }
     .btn-primary-navy {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       background: var(--navy);
-      color: var(--paper);
+      color: #ffffff;
       border: none;
-      padding: 0.85rem 2rem;
+      padding: 0.9rem 2rem;
       font-family: 'Inter Tight', sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.95rem;
-      border-radius: 4px;
+      border-radius: 6px;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
       cursor: pointer;
+      box-shadow: 0 4px 14px rgba(20, 52, 92, 0.2);
     }
-    .btn-primary-navy:hover { background: var(--ink-2); }
+    .btn-primary-navy:hover {
+      background: var(--ink-2);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(20, 52, 92, 0.3);
+    }
     .btn-ghost {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       background: transparent;
       color: var(--navy);
-      border: 1px solid var(--line);
-      padding: 0.85rem 2rem;
+      border: 1.5px solid var(--line);
+      padding: 0.9rem 2rem;
       font-family: 'Inter Tight', sans-serif;
       font-weight: 600;
       font-size: 0.95rem;
-      border-radius: 4px;
+      border-radius: 6px;
       text-decoration: none;
       transition: all 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--navy); }
+    .btn-ghost:hover { border-color: var(--navy); background: rgba(20,52,92,0.03); color: var(--navy); }
+    .hero-pricing-hint {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 991px) {
+      .hero-row { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero { padding: 3.5rem 0 3rem; }
+    }
+
+    /* ── Mockup ── */
+    .mockup-wrapper {
+      position: relative;
+    }
+    .mockup-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      background: radial-gradient(circle at 70% 30%, rgba(122,42,42,0.06) 0%, transparent 60%);
+      border-radius: 20px;
+      pointer-events: none;
+    }
+    .mockup {
+      background: var(--white);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(14, 26, 43, 0.1), 0 2px 8px rgba(14, 26, 43, 0.04);
+      position: relative;
+    }
+    .mockup-chrome {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mockup-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+    .mockup-dot-active { background: var(--navy); }
+    .mockup-url {
+      flex: 1;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+    .mockup-body {
+      padding: 20px;
+      min-height: 320px;
+      position: relative;
+    }
+
+    /* Mockup states */
+    .mockup-state {
+      position: absolute;
+      inset: 0;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+    .mockup-state.active {
+      opacity: 1;
+      pointer-events: auto;
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .mockup-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+    .mockup-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* State 1: Dashboard KPIs */
+    .mock-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .mock-kpi {
+      background: var(--paper);
+      border-radius: 6px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+    }
+    .mock-kpi-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .mock-kpi-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+    .mock-kpi-bar {
+      height: 3px;
+      background: var(--paper-2);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .mock-kpi-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1.5s ease;
+    }
+
+    /* Mini radar (SVG pentagon) */
+    .mock-radar-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0;
+    }
+
+    /* State 2: Questionnaire */
+    .mock-question {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .mock-question-text {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .mock-likert {
+      display: flex;
+      gap: 4px;
+    }
+    .mock-likert-opt {
+      flex: 1;
+      padding: 6px 2px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .mock-likert-opt.selected {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+    .mock-progress {
+      margin-top: 14px;
+    }
+    .mock-progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .mock-progress-bar {
+      height: 4px;
+      background: var(--paper-2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mock-progress-fill {
+      height: 100%;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+
+    /* State 3: RAI Report */
+    .mock-rai-cover {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .mock-rai-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--navy);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .mock-rai-icon i { color: var(--paper); font-size: 1.1rem; }
+    .mock-rai-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--navy);
+      margin-bottom: 2px;
+    }
+    .mock-rai-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .mock-dim-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mock-dim-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.68rem;
+      color: var(--ink);
+    }
+    .mock-dim-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(20,52,92,0.06);
+      color: var(--navy);
+      min-width: 28px;
+      text-align: center;
+    }
+    .mock-dim-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--paper-2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mock-dim-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+    .mock-dim-score {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: var(--navy);
+      min-width: 24px;
+      text-align: right;
+    }
+
+    /* Mockup indicators */
+    .mockup-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 0;
+      background: var(--white);
+      border-top: 1px solid var(--line);
+    }
+    .mockup-ind {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--line);
+      transition: all 0.3s;
+    }
+    .mockup-ind.active {
+      background: var(--navy);
+      width: 20px;
+      border-radius: 3px;
+    }
 
     /* ── Social Proof ── */
     .social-proof {
       background: var(--white);
       border-bottom: 1px solid var(--line);
-      padding: 2.5rem 0;
+      padding: 2.75rem 0;
     }
     .stats-grid {
       display: grid;
@@ -225,85 +578,133 @@
     .stat-item { text-align: center; }
     .stat-number {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.75rem;
+      font-size: 1.85rem;
       font-weight: 600;
       color: var(--navy);
       letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .stat-underline {
+      width: 24px;
+      height: 2px;
+      background: var(--bordo);
+      margin: 8px auto;
+      border-radius: 1px;
     }
     .stat-label {
       font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 0.25rem;
       line-height: 1.4;
     }
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     }
 
-    /* ── Section headings ── */
-    .section-heading {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.75rem, 3vw, 2.25rem);
-      color: var(--navy);
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-    }
-    .section-subtitle {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 3rem;
-      line-height: 1.6;
-    }
-
-    /* ── Pain Section ── */
-    .pain-section {
+    /* ── Before vs After ── */
+    .compare-section {
       padding: 5rem 0;
       background: var(--white);
       border-bottom: 1px solid var(--line);
     }
-    .pain-grid {
+    .compare-heading {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .compare-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      overflow: hidden;
+      gap: 1.5rem;
     }
-    .pain-card {
+    .compare-card {
+      border-radius: var(--radius);
+      padding: 2.25rem;
+      height: 100%;
+    }
+    .compare-card-before {
       background: var(--white);
-      padding: 2rem;
-      position: relative;
+      border: 1.5px solid var(--bordo);
+      border-top: 4px solid var(--bordo);
+      box-shadow: 0 2px 12px rgba(122, 42, 42, 0.06);
     }
-    .pain-card:first-child {
-      background: #faf5f5;
-      border-left: 3px solid var(--bordo);
+    .compare-card-after {
+      background: var(--white);
+      border: 1.5px solid var(--navy);
+      border-top: 4px solid var(--navy);
+      box-shadow: 0 2px 12px rgba(20, 52, 92, 0.06);
     }
-    .pain-card:first-child .pain-label { color: var(--bordo); }
-    .pain-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    .compare-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .compare-card-header i { font-size: 1.4rem; }
+    .compare-card-before .compare-card-header i { color: var(--bordo); }
+    .compare-card-after .compare-card-header i { color: var(--navy); }
+    .compare-card-header h4 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 0;
+    }
+    .compare-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .compare-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
       color: var(--muted);
-      margin-bottom: 0.75rem;
+      line-height: 1.6;
     }
-    .pain-card h5 {
+    .compare-item i {
+      flex-shrink: 0;
+      margin-top: 3px;
+      font-size: 0.9rem;
+    }
+    .compare-card-before .compare-item i { color: var(--bordo); }
+    .compare-card-after .compare-item i { color: var(--navy); }
+    .compare-item strong { color: var(--ink); }
+
+    @media (max-width: 767px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Section styling ── */
+    .section-heading {
       font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: 1.15rem;
-      color: var(--ink);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      color: var(--navy);
+      letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
+      line-height: 1.15;
     }
-    .pain-card p {
-      font-size: 0.875rem;
+    .section-heading::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: var(--bordo);
+      border-radius: 2px;
+      margin-top: 0.75rem;
+    }
+    .section-heading-center { text-align: center; }
+    .section-heading-center::after { margin-left: auto; margin-right: auto; }
+    .section-subtitle {
       color: var(--muted);
-      line-height: 1.65;
+      font-size: 1.05rem;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+      max-width: 600px;
     }
-    @media (max-width: 600px) {
-      .pain-grid { grid-template-columns: 1fr; }
+    .section-subtitle-center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
     }
 
     /* ── Features ── */
@@ -320,24 +721,34 @@
     .feature-card {
       background: var(--white);
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: var(--radius);
       padding: 2rem 1.75rem;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
-    .feature-card:hover { border-color: var(--navy-soft); }
-    .feature-numeral {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--navy-soft);
-      margin-bottom: 1rem;
-      display: block;
+    .feature-card:hover {
+      border-color: var(--navy-soft);
+      box-shadow: 0 4px 16px rgba(14, 26, 43, 0.06);
+      transform: translateY(-2px);
     }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .feature-icon svg { width: 24px; height: 24px; }
+    .feature-icon-navy { background: rgba(20, 52, 92, 0.08); color: var(--navy); }
+    .feature-icon-oliva { background: rgba(90, 107, 58, 0.08); color: var(--oliva); }
+    .feature-icon-ocre { background: rgba(192, 138, 42, 0.08); color: var(--ocre); }
+    .feature-icon-bordo { background: rgba(122, 42, 42, 0.08); color: var(--bordo); }
+    .feature-icon svg { stroke: currentColor; fill: none; }
     .feature-card h5 {
       font-family: 'Inter Tight', sans-serif;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--ink);
       margin-bottom: 0.5rem;
     }
@@ -351,6 +762,66 @@
     }
     @media (max-width: 600px) {
       .features-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Law Banner ── */
+    .law-banner {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4.5rem 0;
+      border-bottom: 3px solid var(--bordo);
+      position: relative;
+      overflow: hidden;
+    }
+    .law-banner::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(122, 42, 42, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .law-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .law-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bordo-2);
+      margin-bottom: 1.5rem;
+    }
+    .law-banner h2 {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.3;
+      color: var(--paper);
+      margin-bottom: 1rem;
+    }
+    .law-banner p {
+      font-size: 0.95rem;
+      color: var(--paper-3);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .law-citation {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--navy-soft);
+      border: 1px solid rgba(61, 90, 133, 0.3);
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border-radius: 2px;
     }
 
     /* ── How it Works ── */
@@ -419,94 +890,91 @@
       .steps-grid { grid-template-columns: 1fr; }
     }
 
-    /* ── Law Banner ── */
-    .law-banner {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 4rem 0;
-      border-bottom: 3px solid var(--bordo);
-    }
-    .law-inner {
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .law-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--bordo-2);
-      margin-bottom: 1.5rem;
-    }
-    .law-banner h2 {
-      font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      line-height: 1.3;
-      color: var(--paper);
-      margin-bottom: 1rem;
-    }
-    .law-banner p {
-      font-size: 0.95rem;
-      color: var(--paper-3);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-    .law-citation {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--navy-soft);
-      border: 1px solid rgba(61, 90, 133, 0.3);
-      display: inline-block;
-      padding: 0.5rem 1.25rem;
-      border-radius: 2px;
-    }
-
     /* ── CTA Final ── */
     .cta-section {
       padding: 5rem 0;
-      background: #f7f7f5;
-      border-bottom: 1px solid var(--line);
+      background: var(--navy);
+      color: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(243,239,228,0.04) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
     }
     .cta-inner {
-      max-width: 600px;
+      max-width: 640px;
       margin: 0 auto;
       text-align: center;
+      position: relative;
     }
     .cta-inner h2 {
       font-family: 'Inter Tight', sans-serif;
-      font-weight: 700;
-      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
       line-height: 1.25;
-      color: var(--navy);
+      color: var(--paper);
       margin-bottom: 1rem;
     }
     .cta-inner p {
       font-size: 1rem;
-      color: var(--muted);
+      color: var(--paper-3);
       line-height: 1.65;
       margin-bottom: 2rem;
     }
-    .cta-inner .btn-primary-navy {
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--paper);
+      color: var(--navy);
+      border: none;
       padding: 1rem 2.5rem;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
       font-size: 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .btn-cta-white:hover {
+      background: var(--white);
+      color: var(--navy);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
 
     /* ── Footer ── */
     .app-footer {
-      background: var(--navy);
+      background: var(--ink);
       color: rgba(243, 239, 228, 0.6);
-      padding: 3rem 0;
+      padding: 0;
     }
-    .footer-inner {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
+    .footer-slogan {
+      text-align: center;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid rgba(243, 239, 228, 0.08);
+    }
+    .footer-slogan span {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: rgba(243, 239, 228, 0.85);
+      letter-spacing: 0.01em;
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 3rem;
+      padding: 2.5rem 0;
     }
     .footer-brand {
       display: flex;
@@ -514,45 +982,61 @@
       gap: 0.5rem;
     }
     .footer-name {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: rgba(243, 239, 228, 0.45);
-      letter-spacing: 0.02em;
       margin-top: 0.25rem;
     }
-    .footer-links {
-      display: flex;
-      gap: 2rem;
+    .footer-desc {
+      font-size: 0.85rem;
+      color: rgba(243, 239, 228, 0.5);
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+    .footer-col h6 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(243, 239, 228, 0.4);
+      margin-bottom: 1rem;
+    }
+    .footer-col ul {
       list-style: none;
       padding: 0;
       margin: 0;
-      flex-wrap: wrap;
     }
-    .footer-links a {
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
       color: rgba(243, 239, 228, 0.6);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--paper); }
-    .footer-copy {
-      width: 100%;
-      text-align: center;
+    .footer-col ul a:hover { color: var(--paper); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(243, 239, 228, 0.08);
       font-size: 0.78rem;
       color: rgba(243, 239, 228, 0.35);
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(243, 239, 228, 0.1);
     }
-
-    @media (max-width: 600px) {
-      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
-      .footer-links { justify-content: center; }
+    .footer-bottom a {
+      color: rgba(243, 239, 228, 0.5);
+      text-decoration: none;
+      margin-left: 0.4rem;
+      transition: color 0.2s;
     }
+    .footer-bottom a:hover { color: var(--paper); }
 
-    /* ── Responsive hero ── */
     @media (max-width: 767px) {
-      .hero { padding: 3.5rem 0 3rem; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .footer-cols { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -585,13 +1069,165 @@
 <!-- Hero -->
 <section class="hero">
   <div class="container">
-    <div class="hero-inner">
-      <div class="hero-badge">Obrigatório por lei &mdash; Lei 10.861/2004 (SINAES)</div>
-      <h1>Avaliação Institucional<br><em>sem planilha, sem dor de cabeça</em></h1>
-      <p class="hero-subtitle">Automatize todo o ciclo da <strong>Comissão Própria de Avaliação</strong>: questionários alinhados às 10 dimensões do SINAES, coleta com lembretes, dashboards em tempo real e geração automática do relatório para o MEC.</p>
-      <div class="hero-buttons">
-        <a href="planos.html" class="btn-primary-navy">Comece agora &mdash; 14 dias grátis</a>
-        <a href="#como-funciona" class="btn-ghost">Veja como funciona</a>
+    <div class="hero-row">
+      <div>
+        <div class="hero-badge fade-up">
+          <i class="bi bi-shield-check"></i>
+          Obrigatório por lei — Lei 10.861/2004
+        </div>
+        <h1 class="fade-up">Relatório do MEC pronto,<br><em>sem planilha, sem desespero</em></h1>
+        <p class="hero-subtitle fade-up">Automatize todo o ciclo da <strong>Comissão Própria de Avaliação</strong>: questionários alinhados às 10 dimensões do SINAES, coleta com lembretes, dashboards em tempo real e geração automática do RAI.</p>
+        <div class="hero-buttons fade-up">
+          <a href="planos.html" class="btn-primary-navy">
+            Comece agora — 14 dias grátis
+            <i class="bi bi-arrow-right"></i>
+          </a>
+          <a href="#como-funciona" class="btn-ghost">Veja como funciona</a>
+        </div>
+        <div class="hero-pricing-hint fade-up">Planos a partir de R$ 499/mês · Sem cartão de crédito</div>
+      </div>
+
+      <!-- Animated Mockup -->
+      <div class="mockup-wrapper fade-up">
+        <div class="mockup" id="heroMockup">
+          <div class="mockup-chrome">
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot mockup-dot-active"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-url" id="mockupUrl">cpa.app/dashboard</span>
+          </div>
+          <div class="mockup-body">
+
+            <!-- State 1: Dashboard -->
+            <div class="mockup-state active" id="state1">
+              <div class="mockup-header">
+                <span class="mockup-title">Dashboard da CPA</span>
+                <span class="mockup-label">Ciclo 2024–2026</span>
+              </div>
+              <div class="mock-kpis">
+                <div class="mock-kpi">
+                  <div class="mock-kpi-value" data-count-to="62" data-suffix="%">0%</div>
+                  <div class="mock-kpi-label">Participação</div>
+                  <div class="mock-kpi-bar"><div class="mock-kpi-bar-fill" style="width:0%;background:var(--navy)"></div></div>
+                </div>
+                <div class="mock-kpi">
+                  <div class="mock-kpi-value" data-count-to="1247" data-separator=".">0</div>
+                  <div class="mock-kpi-label">Respostas</div>
+                  <div class="mock-kpi-bar"><div class="mock-kpi-bar-fill" style="width:0%;background:var(--oliva)"></div></div>
+                </div>
+                <div class="mock-kpi">
+                  <div class="mock-kpi-value" data-count-to="3">0</div>
+                  <div class="mock-kpi-label">Questionários</div>
+                  <div class="mock-kpi-bar"><div class="mock-kpi-bar-fill" style="width:0%;background:var(--ocre)"></div></div>
+                </div>
+              </div>
+              <div class="mock-radar-wrap">
+                <svg viewBox="0 0 180 140" width="180" height="140" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Grid pentagons -->
+                  <polygon points="90,15 160,55 135,125 45,125 20,55" fill="none" stroke="#d5cbb2" stroke-width="0.5"/>
+                  <polygon points="90,35 140,63 121,115 59,115 40,63" fill="none" stroke="#d5cbb2" stroke-width="0.5"/>
+                  <polygon points="90,55 120,72 108,105 72,105 60,72" fill="none" stroke="#d5cbb2" stroke-width="0.5"/>
+                  <!-- Data polygon -->
+                  <polygon points="90,25 148,58 125,118 55,110 30,60" fill="rgba(20,52,92,0.1)" stroke="#14345c" stroke-width="1.5"/>
+                  <!-- Axis labels -->
+                  <text x="90" y="10" font-family="JetBrains Mono" font-size="7" fill="#6b6450" text-anchor="middle">Planejamento</text>
+                  <text x="168" y="55" font-family="JetBrains Mono" font-size="7" fill="#6b6450" text-anchor="start">Desenv.</text>
+                  <text x="142" y="133" font-family="JetBrains Mono" font-size="7" fill="#6b6450" text-anchor="start">Acadêmicas</text>
+                  <text x="38" y="133" font-family="JetBrains Mono" font-size="7" fill="#6b6450" text-anchor="end">Gestão</text>
+                  <text x="12" y="55" font-family="JetBrains Mono" font-size="7" fill="#6b6450" text-anchor="end">Infra</text>
+                  <!-- Data points -->
+                  <circle cx="90" cy="25" r="3" fill="#14345c"/>
+                  <circle cx="148" cy="58" r="3" fill="#14345c"/>
+                  <circle cx="125" cy="118" r="3" fill="#14345c"/>
+                  <circle cx="55" cy="110" r="3" fill="#14345c"/>
+                  <circle cx="30" cy="60" r="3" fill="#14345c"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- State 2: Questionnaire -->
+            <div class="mockup-state" id="state2">
+              <div class="mockup-header">
+                <span class="mockup-title">Avaliação Institucional</span>
+                <span class="mockup-label">Discentes</span>
+              </div>
+              <div class="mock-question">
+                <div class="mock-question-text">A missão da instituição é claramente divulgada e compreendida pela comunidade acadêmica.</div>
+                <div class="mock-likert">
+                  <div class="mock-likert-opt">DT</div>
+                  <div class="mock-likert-opt">D</div>
+                  <div class="mock-likert-opt">N</div>
+                  <div class="mock-likert-opt selected">C</div>
+                  <div class="mock-likert-opt">CT</div>
+                </div>
+              </div>
+              <div class="mock-question">
+                <div class="mock-question-text">O PDI reflete as necessidades da comunidade acadêmica.</div>
+                <div class="mock-likert">
+                  <div class="mock-likert-opt">DT</div>
+                  <div class="mock-likert-opt">D</div>
+                  <div class="mock-likert-opt">N</div>
+                  <div class="mock-likert-opt">C</div>
+                  <div class="mock-likert-opt selected">CT</div>
+                </div>
+              </div>
+              <div class="mock-progress">
+                <div class="mock-progress-label">
+                  <span>Seção 1 de 10 — Missão e PDI</span>
+                  <span>10%</span>
+                </div>
+                <div class="mock-progress-bar">
+                  <div class="mock-progress-fill" style="width:10%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- State 3: RAI Report -->
+            <div class="mockup-state" id="state3">
+              <div class="mockup-header">
+                <span class="mockup-title">Relatório RAI</span>
+                <span class="mockup-label">Gerando PDF</span>
+              </div>
+              <div class="mock-rai-cover">
+                <div class="mock-rai-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                <div class="mock-rai-title">Relatório de Autoavaliação Institucional</div>
+                <div class="mock-rai-sub">Ciclo 2024–2026 · Faculdade Exemplo</div>
+              </div>
+              <div class="mock-dim-list">
+                <div class="mock-dim-row">
+                  <span class="mock-dim-badge">D1</span>
+                  <span style="flex:0 0 auto;font-size:0.65rem;color:var(--muted);min-width:70px">Missão e PDI</span>
+                  <div class="mock-dim-bar"><div class="mock-dim-bar-fill" style="width:84%;background:var(--oliva)"></div></div>
+                  <span class="mock-dim-score">4.2</span>
+                </div>
+                <div class="mock-dim-row">
+                  <span class="mock-dim-badge">D4</span>
+                  <span style="flex:0 0 auto;font-size:0.65rem;color:var(--muted);min-width:70px">Comunicação</span>
+                  <div class="mock-dim-bar"><div class="mock-dim-bar-fill" style="width:58%;background:var(--bordo)"></div></div>
+                  <span class="mock-dim-score">2.9</span>
+                </div>
+                <div class="mock-dim-row">
+                  <span class="mock-dim-badge">D7</span>
+                  <span style="flex:0 0 auto;font-size:0.65rem;color:var(--muted);min-width:70px">Infraestrutura</span>
+                  <div class="mock-dim-bar"><div class="mock-dim-bar-fill" style="width:64%;background:var(--ocre)"></div></div>
+                  <span class="mock-dim-score">3.2</span>
+                </div>
+                <div class="mock-dim-row">
+                  <span class="mock-dim-badge">D8</span>
+                  <span style="flex:0 0 auto;font-size:0.65rem;color:var(--muted);min-width:70px">Planejamento</span>
+                  <div class="mock-dim-bar"><div class="mock-dim-bar-fill" style="width:76%;background:var(--navy)"></div></div>
+                  <span class="mock-dim-score">3.8</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="mockup-indicators">
+            <span class="mockup-ind active" data-state="0"></span>
+            <span class="mockup-ind" data-state="1"></span>
+            <span class="mockup-ind" data-state="2"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -601,51 +1237,85 @@
 <section class="social-proof">
   <div class="container">
     <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-number">2.600+</div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count-to="2600" data-suffix="+">0</div>
+        <div class="stat-underline"></div>
         <div class="stat-label">IES no Brasil precisam de CPA</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">10</div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count-to="10">0</div>
+        <div class="stat-underline"></div>
         <div class="stat-label">Dimensões SINAES cobertas</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">5&times;</div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count-text="5×">—</div>
+        <div class="stat-underline"></div>
         <div class="stat-label">Mais rápido que o processo manual</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">100%</div>
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-count-text="100%">—</div>
+        <div class="stat-underline"></div>
         <div class="stat-label">Alinhado ao formato MEC</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Pain Points -->
-<section class="pain-section">
+<!-- Before vs After -->
+<section class="compare-section">
   <div class="container">
-    <h2 class="section-heading">O que acontece sem um sistema de CPA?</h2>
-    <p class="section-subtitle">A maioria das IES ainda faz assim...</p>
-    <div class="pain-grid">
-      <div class="pain-card">
-        <div class="pain-label">Problema principal</div>
-        <h5>Risco na avaliação do MEC</h5>
-        <p>Relatório incompleto ou mal formatado perde pontos na avaliação in loco. A nota da instituição cai.</p>
+    <div class="compare-heading fade-up">
+      <h2 class="section-heading section-heading-center">O Custo de Continuar no Google Forms</h2>
+      <p class="section-subtitle section-subtitle-center">A maioria das IES ainda faz CPA com ferramentas genéricas. O resultado: relatórios fracos, baixa adesão e risco na avaliação do MEC.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card compare-card-before fade-up">
+        <div class="compare-card-header">
+          <i class="bi bi-emoji-frown"></i>
+          <h4>A realidade de hoje</h4>
+        </div>
+        <div class="compare-list">
+          <div class="compare-item">
+            <i class="bi bi-dash-circle"></i>
+            <span>Questionários no <strong>Google Forms sem padrão SINAES</strong> — perguntas desalinhadas com as dimensões</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-dash-circle"></i>
+            <span>Dados espalhados em <strong>planilhas que ninguém consolida</strong> — informação perdida entre ciclos</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-dash-circle"></i>
+            <span>Relatório montado no <strong>Word às pressas</strong> antes da visita do MEC — sem gráficos, sem análise</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-dash-circle"></i>
+            <span>Sem registro de participação — <strong>impossível provar adesão</strong> dos segmentos</span>
+          </div>
+        </div>
       </div>
-      <div class="pain-card">
-        <div class="pain-label">Ferramentas</div>
-        <h5>Google Forms + Word + Excel</h5>
-        <p>Questionários fragmentados, dados espalhados em planilhas que ninguém consolida.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-label">Participação</div>
-        <h5>Baixa adesão dos respondentes</h5>
-        <p>Sem lembretes automáticos, menos de 20% dos alunos respondem a avaliação.</p>
-      </div>
-      <div class="pain-card">
-        <div class="pain-label">Tempo</div>
-        <h5>Semanas no relatório</h5>
-        <p>Compilar dados manualmente, criar gráficos no Excel, formatar no Word. Semanas de trabalho.</p>
+      <div class="compare-card compare-card-after fade-up">
+        <div class="compare-card-header">
+          <i class="bi bi-emoji-smile"></i>
+          <h4>Com o CPA Digital</h4>
+        </div>
+        <div class="compare-list">
+          <div class="compare-item">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>Templates alinhados</strong> às 10 dimensões e 5 eixos do SINAES — pronto para usar</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>Consolidação automática</strong> por dimensão, segmento e ciclo — zero planilha</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>RAI gerado em PDF</strong> no formato esperado pelo MEC — com gráficos e análises</span>
+          </div>
+          <div class="compare-item">
+            <i class="bi bi-check-circle-fill"></i>
+            <span><strong>Dashboard de participação</strong> em tempo real por segmento — evidência documentada</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -654,38 +1324,50 @@
 <!-- Features -->
 <section class="features-section" id="features">
   <div class="container">
-    <h2 class="section-heading">Tudo que sua CPA precisa em um só lugar</h2>
-    <p class="section-subtitle">Do questionário ao relatório final, automatizado e alinhado ao SINAES</p>
+    <h2 class="section-heading fade-up">Tudo que sua CPA precisa em um só lugar</h2>
+    <p class="section-subtitle fade-up">Do questionário ao relatório final, automatizado e alinhado ao SINAES</p>
     <div class="features-grid">
-      <div class="feature-card">
-        <span class="feature-numeral">I</span>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-navy">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+        </div>
         <h5>Questionários por Dimensão</h5>
         <p>Templates prontos alinhados aos 5 eixos e 10 dimensões do SINAES. Personalize ou use direto.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-numeral">II</span>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-oliva">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg>
+        </div>
         <h5>Coleta Multi-segmento</h5>
-        <p>Questionários específicos para discentes, docentes, TAEs e gestores. Tudo anônimo.</p>
+        <p>Questionários específicos para discentes, docentes, TAEs e gestores. Tudo anônimo e por link.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-numeral">III</span>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-ocre">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"/></svg>
+        </div>
         <h5>Lembretes Automáticos</h5>
         <p>Disparo de e-mails por segmento com acompanhamento de taxa de participação em tempo real.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-numeral">IV</span>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-bordo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6"/></svg>
+        </div>
         <h5>Dashboard em Tempo Real</h5>
-        <p>Acompanhe participação, médias por dimensão e comparativo histórico entre ciclos.</p>
+        <p>Acompanhe participação, médias por dimensão e comparativo histórico entre ciclos avaliativos.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-numeral">V</span>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-navy">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"/></svg>
+        </div>
         <h5>Relatório RAI Automático</h5>
-        <p>Gera o Relatório de Autoavaliação no formato esperado pelo MEC, com gráficos e análises.</p>
+        <p>Gera o Relatório de Autoavaliação no formato MEC, com gráficos, análises e campos editáveis.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-numeral">VI</span>
-        <h5>Pôsteres e Infográficos</h5>
-        <p>Gere materiais prontos para imprimir e fixar nos murais da instituição. Com QR code.</p>
+      <div class="feature-card fade-up">
+        <div class="feature-icon feature-icon-oliva">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z"/></svg>
+        </div>
+        <h5>Pôsteres e QR Codes</h5>
+        <p>Gere materiais prontos para imprimir e fixar nos murais da instituição. Aumente a participação.</p>
       </div>
     </div>
   </div>
@@ -694,10 +1376,10 @@
 <!-- Law Banner -->
 <section class="law-banner">
   <div class="container">
-    <div class="law-inner">
+    <div class="law-inner fade-up">
       <div class="law-eyebrow">Legislação Federal</div>
       <h2>Obrigatório pelo MEC</h2>
-      <p>A Lei 10.861/2004 (SINAES) determina que toda Instituição de Ensino Superior no Brasil deve ter uma Comissão Própria de Avaliação e produzir o Relatório de Autoavaliação Institucional. Não é opcional &mdash; é compliance.</p>
+      <p>A Lei 10.861/2004 (SINAES) determina que toda Instituição de Ensino Superior no Brasil deve ter uma Comissão Própria de Avaliação e produzir o Relatório de Autoavaliação Institucional. Não é opcional — é compliance.</p>
       <div class="law-citation">LEI 10.861/2004 &middot; SINAES &middot; MEC/INEP</div>
     </div>
   </div>
@@ -706,24 +1388,25 @@
 <!-- How it Works -->
 <section class="how-section" id="como-funciona">
   <div class="container">
-    <h2 class="section-heading" style="text-align: center; margin-bottom: 3rem;">Como funciona</h2>
+    <h2 class="section-heading section-heading-center fade-up">Como funciona</h2>
+    <p class="section-subtitle section-subtitle-center fade-up">Quatro etapas para sair do caos e ter controle total do ciclo avaliativo.</p>
     <div class="steps-grid">
-      <div class="step-card">
+      <div class="step-card fade-up">
         <span class="step-numeral">I</span>
         <h5>Crie o Ciclo</h5>
         <p>Defina o período de avaliação e selecione os questionários por segmento.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card fade-up">
         <span class="step-numeral">II</span>
         <h5>Publique e Colete</h5>
         <p>Gere links por segmento. O sistema envia lembretes e mostra participação ao vivo.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card fade-up">
         <span class="step-numeral">III</span>
         <h5>Analise Resultados</h5>
         <p>Dashboards com médias por dimensão, gráficos radar e comparativo histórico.</p>
       </div>
-      <div class="step-card">
+      <div class="step-card fade-up">
         <span class="step-numeral">IV</span>
         <h5>Gere o Relatório</h5>
         <p>RAI em PDF no formato MEC. Pronto para submissão no e-MEC.</p>
@@ -735,10 +1418,13 @@
 <!-- CTA Final -->
 <section class="cta-section">
   <div class="container">
-    <div class="cta-inner">
+    <div class="cta-inner fade-up">
       <h2>Sua próxima avaliação do MEC está mais perto do que parece</h2>
       <p>Não espere a véspera da visita in loco. Comece agora e tenha dados de qualidade quando o avaliador chegar.</p>
-      <a href="planos.html" class="btn-primary-navy">Comece grátis &mdash; 14 dias sem compromisso</a>
+      <a href="planos.html" class="btn-cta-white">
+        Comece grátis — 14 dias sem compromisso
+        <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
   </div>
 </section>
@@ -746,9 +1432,15 @@
 <!-- Footer -->
 <footer class="app-footer">
   <div class="container">
-    <div class="footer-inner">
+    <!-- Slogan -->
+    <div class="footer-slogan">
+      <span>Avaliação que transforma, com a seriedade que o MEC exige.</span>
+    </div>
+
+    <!-- Columns -->
+    <div class="footer-cols">
       <div class="footer-brand">
-        <svg viewBox="0 0 280 60" width="210" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 280 60" width="180" xmlns="http://www.w3.org/2000/svg">
           <circle cx="30" cy="30" r="27" fill="none" stroke="#f3efe4" stroke-width="1.5" opacity="0.5"/>
           <circle cx="30" cy="30" r="22" fill="none" stroke="#f3efe4" stroke-width="0.5" stroke-dasharray="1 2.5" opacity="0.3"/>
           <text x="30" y="38" font-family="Instrument Serif, Georgia, serif" font-size="19" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-0.5">CPA</text>
@@ -756,18 +1448,166 @@
           <text x="72" y="35" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="30" fill="#f3efe4" letter-spacing="-0.5">CPA<tspan fill="#9a3838" font-style="normal">.</tspan></text>
           <text x="74" y="52" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="2.5" fill="rgba(243,239,228,0.4)">AVALIAÇÃO INSTITUCIONAL</text>
         </svg>
-        <span class="footer-name">Comissão Própria de Avaliação</span>
+        <p class="footer-desc">Sistema de avaliação institucional para IES. Automatize a CPA com questionários, dashboards e relatórios no padrão MEC.</p>
       </div>
-      <ul class="footer-links">
-        <li><a href="#">Termos de Uso</a></li>
-        <li><a href="#">Privacidade</a></li>
-        <li><a href="planos.html">Planos</a></li>
-        <li><a href="#">Suporte</a></li>
-      </ul>
+      <div class="footer-col">
+        <h6>Produto</h6>
+        <ul>
+          <li><a href="#features">Funcionalidades</a></li>
+          <li><a href="planos.html">Planos</a></li>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>Institucional</h6>
+        <ul>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Privacidade</a></li>
+          <li><a href="#">Suporte</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h6>Contato</h6>
+        <ul>
+          <li><a href="mailto:contato@cpa.app"><i class="bi bi-envelope me-2"></i>contato@cpa.app</a></li>
+          <li><span style="font-size:0.88rem"><i class="bi bi-geo-alt me-2"></i>Cuiabá, MT</span></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-copy">&copy; 2026 CPA &mdash; Avaliação Institucional Automatizada</div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <span>&copy; 2026 CPA. Todos os direitos reservados.</span>
+      <span>
+        Desenvolvido por Diego Alves
+        <a href="https://www.linkedin.com/in/diego-h-alves-dev" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="https://github.com/DiegoAlvesDevCuiabano" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="bi bi-github"></i></a>
+      </span>
+    </div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ── Fade-in on scroll ──
+  var fadeObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(function(el) { fadeObserver.observe(el); });
+
+  // ── Smooth scroll ──
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ── Count-up animation ──
+  function countUp(el, target, suffix, separator, duration) {
+    var start = performance.now();
+    function tick(now) {
+      var progress = Math.min((now - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(target * eased);
+      var text = separator ? current.toLocaleString('pt-BR') : String(current);
+      el.textContent = text + (suffix || '');
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Count-up for social proof stats
+  var statsObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        if (el.dataset.countTo) {
+          countUp(el, parseInt(el.dataset.countTo), el.dataset.suffix || '', el.dataset.separator, 2000);
+        } else if (el.dataset.countText) {
+          setTimeout(function() { el.textContent = el.dataset.countText; }, 800);
+        }
+        statsObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.stat-number[data-count-to], .stat-number[data-count-text]').forEach(function(el) {
+    statsObserver.observe(el);
+  });
+
+  // ── Mockup demo ──
+  var mockup = document.getElementById('heroMockup');
+  if (!mockup) return;
+
+  var states = [document.getElementById('state1'), document.getElementById('state2'), document.getElementById('state3')];
+  var indicators = document.querySelectorAll('.mockup-ind');
+  var urlEl = document.getElementById('mockupUrl');
+  var urls = ['cpa.app/dashboard', 'cpa.app/responder/q3k8', 'cpa.app/relatorio/rai'];
+  var currentState = 0;
+  var mockupStarted = false;
+
+  function showState(index) {
+    states.forEach(function(s, i) {
+      if (i === index) { s.classList.add('active'); }
+      else { s.classList.remove('active'); }
+    });
+    indicators.forEach(function(ind, i) {
+      if (i === index) { ind.classList.add('active'); }
+      else { ind.classList.remove('active'); }
+    });
+    urlEl.textContent = urls[index];
+  }
+
+  function nextState() {
+    currentState = (currentState + 1) % 3;
+    showState(currentState);
+  }
+
+  // KPI count-up inside mockup
+  function animateMockupKPIs() {
+    document.querySelectorAll('.mock-kpi-value[data-count-to]').forEach(function(el) {
+      var target = parseInt(el.dataset.countTo);
+      var suffix = el.dataset.suffix || '';
+      var sep = el.dataset.separator;
+      countUp(el, target, suffix, sep, 1500);
+    });
+    // Animate KPI bars
+    setTimeout(function() {
+      var fills = document.querySelectorAll('.mock-kpi-bar-fill');
+      if (fills[0]) fills[0].style.width = '62%';
+      if (fills[1]) fills[1].style.width = '83%';
+      if (fills[2]) fills[2].style.width = '30%';
+    }, 300);
+  }
+
+  var mockupObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !mockupStarted) {
+        mockupStarted = true;
+        mockupObserver.disconnect();
+        animateMockupKPIs();
+        setInterval(nextState, 3500);
+      }
+    });
+  }, { threshold: 0.3 });
+  mockupObserver.observe(mockup);
+
+  // Click indicators
+  indicators.forEach(function(ind, i) {
+    ind.addEventListener('click', function() {
+      currentState = i;
+      showState(i);
+    });
+  });
+
+});
+</script>
 </body>
 </html>
