@@ -21,7 +21,7 @@
   --paper-3: #ded5bf;
   --line: #d5cbb2;
   --line-strong: #14345c;
-  --muted: #6b6450;
+  --muted: #55503e;
   --bordo: #7a2a2a;
   --bordo-2: #9a3838;
   --ocre: #c08a2a;
@@ -144,6 +144,182 @@ body {
 
 .content-area { padding: 1.5rem 2rem 2.5rem; }
 
+/* ── Status do Ciclo (NOVO) ── */
+.cycle-status {
+  background: var(--navy);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  color: var(--paper);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.cycle-status-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.cycle-status-main h2 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: var(--paper);
+}
+.cycle-status-main .cycle-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(243,239,228,0.6);
+}
+.cycle-metrics {
+  display: flex;
+  gap: 2rem;
+}
+.cycle-metric {
+  text-align: center;
+}
+.cycle-metric-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--paper);
+  line-height: 1;
+}
+.cycle-metric-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(243,239,228,0.55);
+  margin-top: 4px;
+}
+.cycle-action-btn {
+  background: var(--paper);
+  color: var(--navy);
+  border: none;
+  padding: 0.6rem 1.25rem;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cycle-action-btn:hover {
+  background: var(--paper-2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* ── RAI Progress (NOVO) ── */
+.rai-progress {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ocre);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.rai-progress-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1;
+}
+.rai-progress-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: rgba(192,138,42,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rai-progress-icon i {
+  color: var(--ocre);
+  font-size: 1rem;
+}
+.rai-progress-info h4 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 2px;
+}
+.rai-progress-info span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+.rai-progress-bar-wrap {
+  flex: 1;
+  min-width: 120px;
+  max-width: 220px;
+}
+.rai-progress-bar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.rai-progress-bar-top span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--ocre);
+}
+.rai-bar-track {
+  height: 5px;
+  background: var(--paper-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.rai-bar-fill {
+  height: 100%;
+  background: var(--ocre);
+  border-radius: 3px;
+}
+.rai-progress-right {
+  flex-shrink: 0;
+}
+.rai-btn {
+  background: none;
+  border: 1.5px solid var(--line);
+  color: var(--ink-2);
+  padding: 0.45rem 1rem;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.rai-btn:hover {
+  background: var(--paper);
+  border-color: var(--navy-soft);
+}
+
 /* ── KPI Cards ── */
 .kpi-card {
   background: #fff; border-radius: 6px; padding: 22px 24px;
@@ -213,14 +389,10 @@ body {
   border-bottom: 1px solid var(--line);
 }
 .table-custom tbody tr:hover { background: rgba(20,52,92,0.02); }
-.eixo-badge {
-  display: inline-block; padding: 2px 8px; border-radius: 3px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .6rem; font-weight: 500; letter-spacing: .3px;
-}
 .score-dot {
   display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
 }
+/* Classificação: bordo = fragilidade, ocre = atenção, oliva = potencialidade */
 .classif-badge {
   display: inline-block; padding: 3px 10px; border-radius: 3px;
   font-family: 'JetBrains Mono', monospace;
@@ -259,6 +431,10 @@ body {
   .page-header { padding: 20px; }
   .content-area { padding: 16px; }
   .kpi-card { padding: 16px 18px; }
+  .cycle-status { padding: 1.25rem; gap: 1rem; }
+  .cycle-metrics { gap: 1.25rem; }
+  .rai-progress { flex-direction: column; align-items: flex-start; }
+  .rai-progress-bar-wrap { max-width: 100%; width: 100%; }
 }
 </style>
 </head>
@@ -276,7 +452,7 @@ body {
         <text x="20" y="26" font-family="Instrument Serif, Georgia, serif" font-size="11" font-weight="400" text-anchor="middle" fill="currentColor" letter-spacing="-0.3">CPA</text>
         <line x1="13" y1="29" x2="27" y2="29" stroke="#7a2a2a" stroke-width="0.6"/>
         <text x="46" y="23" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-weight="400" font-size="17" fill="currentColor" letter-spacing="-0.3">CPA<tspan fill="#7a2a2a" font-style="normal">.</tspan></text>
-        <text x="47" y="34" font-family="JetBrains Mono, monospace" font-size="5.5" letter-spacing="2" fill="#6b6450">AVALIAÇÃO INSTITUCIONAL</text>
+        <text x="47" y="34" font-family="JetBrains Mono, monospace" font-size="5.5" letter-spacing="2" fill="#55503e">AVALIAÇÃO INSTITUCIONAL</text>
       </svg>
     </a>
   </div>
@@ -310,20 +486,20 @@ body {
     <a href="relatorio.html" class="sidebar-item">
       <i class="bi bi-bar-chart-line"></i> Relatórios
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="melhorias.html" class="sidebar-item">
       <i class="bi bi-clipboard-check"></i> Plano de Melhorias
     </a>
   </div>
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-label">Administração</div>
-    <a href="#" class="sidebar-item">
+    <a href="ciclos.html" class="sidebar-item">
       <i class="bi bi-arrow-repeat"></i> Ciclos
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="membros.html" class="sidebar-item">
       <i class="bi bi-people"></i> Membros CPA
     </a>
-    <a href="#" class="sidebar-item">
+    <a href="configuracoes.html" class="sidebar-item">
       <i class="bi bi-gear"></i> Configurações
     </a>
   </div>
@@ -345,6 +521,60 @@ body {
   </div>
 
   <div class="content-area">
+
+    <!-- STATUS DO CICLO (NOVO — resolve "o que faço hoje?") -->
+    <div class="cycle-status">
+      <div class="cycle-status-left">
+        <div class="cycle-status-main">
+          <h2>Ciclo 2024–2026</h2>
+          <div class="cycle-phase">Fase: Coleta em andamento</div>
+        </div>
+        <div class="cycle-metrics">
+          <div class="cycle-metric">
+            <div class="cycle-metric-value">62%</div>
+            <div class="cycle-metric-label">Adesão</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="cycle-metric-value">18</div>
+            <div class="cycle-metric-label">Dias restantes</div>
+          </div>
+          <div class="cycle-metric">
+            <div class="cycle-metric-value">3</div>
+            <div class="cycle-metric-label">Questionários</div>
+          </div>
+        </div>
+      </div>
+      <button class="cycle-action-btn">
+        <i class="bi bi-send-fill"></i> Enviar lembretes
+      </button>
+    </div>
+
+    <!-- RAI PROGRESS (NOVO — torna o RAI a estrela) -->
+    <div class="rai-progress">
+      <div class="rai-progress-left">
+        <div class="rai-progress-icon">
+          <i class="bi bi-file-earmark-richtext"></i>
+        </div>
+        <div class="rai-progress-info">
+          <h4>Relatório de Autoavaliação (RAI)</h4>
+          <span>Prazo: 14/12/2026 &middot; 47 dias</span>
+        </div>
+      </div>
+      <div class="rai-progress-bar-wrap">
+        <div class="rai-progress-bar-top">
+          <span>73% pronto</span>
+        </div>
+        <div class="rai-bar-track">
+          <div class="rai-bar-fill" style="width:73%"></div>
+        </div>
+      </div>
+      <div class="rai-progress-right">
+        <a href="relatorio.html" class="rai-btn">
+          <i class="bi bi-pencil-square"></i> Continuar RAI
+        </a>
+      </div>
+    </div>
+
     <!-- KPI Cards -->
     <div class="row g-3 mb-4">
       <div class="col-lg-3 col-sm-6">
@@ -373,10 +603,10 @@ body {
       </div>
       <div class="col-lg-3 col-sm-6">
         <div class="kpi-card">
-          <div class="kpi-label">Encerramento</div>
-          <div class="kpi-value">18d</div>
-          <div class="kpi-underline"></div>
-          <div class="kpi-sub">para fim do ciclo</div>
+          <div class="kpi-label">Fragilidades</div>
+          <div class="kpi-value" style="color:var(--bordo)">2</div>
+          <div class="kpi-underline" style="background:var(--bordo)"></div>
+          <div class="kpi-sub">dimensões abaixo de 3.5</div>
         </div>
       </div>
     </div>
@@ -438,7 +668,6 @@ body {
           <table class="table table-custom mb-0">
             <thead>
               <tr>
-                <th>Eixo</th>
                 <th>Dimensão</th>
                 <th>Média</th>
                 <th>Respostas</th>
@@ -506,7 +735,7 @@ new Chart(radarCtx, {
     scales: {
       r: {
         min: 0, max: 5,
-        ticks: { stepSize: 1, font: { size: 10, family: 'JetBrains Mono' }, backdropColor: 'transparent', color: '#6b6450' },
+        ticks: { stepSize: 1, font: { size: 10, family: 'JetBrains Mono' }, backdropColor: 'transparent', color: '#55503e' },
         pointLabels: { font: { size: 11, family: 'Inter Tight', weight: '500' }, color: '#1a2a42' },
         grid: { color: 'rgba(20,52,92,.06)' },
         angleLines: { color: 'rgba(20,52,92,.06)' }
@@ -521,27 +750,28 @@ new Chart(radarCtx, {
   }
 });
 
-// Table data
+// Table — cores semânticas: bordo=fragilidade, ocre=atenção, oliva=potencialidade
+// Removida coluna "Eixo" com cores competindo — simplificado
 const dimensoes = [
-  { eixo: 'Eixo 1', eixoCor: '#14345c', eixoBg: 'rgba(20,52,92,.08)', dim: 'Missão e PDI', media: 4.2, resp: 189, classif: 'potencialidade' },
-  { eixo: 'Eixo 1', eixoCor: '#14345c', eixoBg: 'rgba(20,52,92,.08)', dim: 'Planejamento e Avaliação', media: 3.8, resp: 175, classif: 'potencialidade' },
-  { eixo: 'Eixo 2', eixoCor: '#0f2544', eixoBg: 'rgba(15,37,68,.08)', dim: 'Desenvolvimento Institucional', media: 4.1, resp: 162, classif: 'potencialidade' },
-  { eixo: 'Eixo 3', eixoCor: '#3d5a85', eixoBg: 'rgba(61,90,133,.08)', dim: 'Políticas de Ensino', media: 3.5, resp: 201, classif: 'atencao' },
-  { eixo: 'Eixo 3', eixoCor: '#3d5a85', eixoBg: 'rgba(61,90,133,.08)', dim: 'Políticas de Pesquisa', media: 3.3, resp: 143, classif: 'atencao' },
-  { eixo: 'Eixo 3', eixoCor: '#3d5a85', eixoBg: 'rgba(61,90,133,.08)', dim: 'Políticas de Extensão', media: 3.6, resp: 158, classif: 'atencao' },
-  { eixo: 'Eixo 4', eixoCor: '#c08a2a', eixoBg: 'rgba(192,138,42,.08)', dim: 'Comunicação com a Sociedade', media: 2.9, resp: 134, classif: 'fragilidade' },
-  { eixo: 'Eixo 4', eixoCor: '#c08a2a', eixoBg: 'rgba(192,138,42,.08)', dim: 'Políticas de Pessoal', media: 3.9, resp: 177, classif: 'potencialidade' },
-  { eixo: 'Eixo 4', eixoCor: '#c08a2a', eixoBg: 'rgba(192,138,42,.08)', dim: 'Organização e Gestão', media: 3.7, resp: 155, classif: 'atencao' },
-  { eixo: 'Eixo 5', eixoCor: '#5a6b3a', eixoBg: 'rgba(90,107,58,.08)', dim: 'Infraestrutura Física', media: 3.2, resp: 198, classif: 'atencao' }
+  { dim: 'Missão e PDI', media: 4.2, resp: 189, classif: 'potencialidade' },
+  { dim: 'Planejamento e Avaliação', media: 3.8, resp: 175, classif: 'potencialidade' },
+  { dim: 'Desenvolvimento Institucional', media: 4.1, resp: 162, classif: 'potencialidade' },
+  { dim: 'Políticas de Ensino', media: 3.5, resp: 201, classif: 'atencao' },
+  { dim: 'Políticas de Pesquisa', media: 3.3, resp: 143, classif: 'atencao' },
+  { dim: 'Políticas de Extensão', media: 3.6, resp: 158, classif: 'atencao' },
+  { dim: 'Comunicação com a Sociedade', media: 2.9, resp: 134, classif: 'fragilidade' },
+  { dim: 'Políticas de Pessoal', media: 3.9, resp: 177, classif: 'potencialidade' },
+  { dim: 'Organização e Gestão', media: 3.7, resp: 155, classif: 'atencao' },
+  { dim: 'Infraestrutura Física', media: 3.2, resp: 198, classif: 'fragilidade' }
 ];
 
 const tbody = document.getElementById('tabelaDimensoes');
 dimensoes.forEach(d => {
-  const scoreCor = d.media >= 4 ? '#5a6b3a' : d.media >= 3.5 ? '#c08a2a' : '#7a2a2a';
+  // Cores semânticas: oliva >= 3.8, ocre >= 3.3, bordo < 3.3
+  const scoreCor = d.media >= 3.8 ? '#5a6b3a' : d.media >= 3.3 ? '#c08a2a' : '#7a2a2a';
   const classifLabel = d.classif === 'potencialidade' ? 'Potencialidade' : d.classif === 'atencao' ? 'Atenção' : 'Fragilidade';
   tbody.innerHTML += `
     <tr>
-      <td><span class="eixo-badge" style="background:${d.eixoBg};color:${d.eixoCor}">${d.eixo}</span></td>
       <td style="font-weight:500">${d.dim}</td>
       <td><span class="score-dot" style="background:${scoreCor}"></span><strong style="font-family:'JetBrains Mono',monospace;font-size:.8rem">${d.media.toFixed(1)}</strong></td>
       <td style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.75rem">${d.resp}</td>

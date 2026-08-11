@@ -20,14 +20,12 @@
       --navy-soft: #3d5a85;
       --paper: #f3efe4;
       --paper-2: #eae4d4;
-      --paper-3: #ded5bf;
       --line: #d5cbb2;
-      --muted: #6b6450;
+      --muted: #55503e;
       --bordo: #7a2a2a;
       --ocre: #c08a2a;
       --oliva: #5a6b3a;
       --white: #ffffff;
-      --danger: #b91c1c;
       --radius: 8px;
     }
 
@@ -41,244 +39,129 @@
       min-height: 100vh;
     }
 
-    /* ── Top Bar ── */
-    .top-bar {
-      background: var(--paper-2);
-      padding: 10px 0;
+    /* ── Sticky Header (fino) ── */
+    .resp-header {
       position: sticky;
       top: 0;
       z-index: 100;
+      background: var(--white);
       border-bottom: 1px solid var(--line);
     }
-    .top-bar .inner {
-      max-width: 900px;
+    .resp-header-inner {
+      max-width: 680px;
       margin: 0 auto;
-      padding: 0 1.25rem;
+      padding: 10px 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
     }
-    .logo-area {
+    .resp-brand {
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
     }
-    .logo-selo-small {
-      width: 32px;
-      height: 32px;
-    }
-    .logo-text-group {
-      display: flex;
-      flex-direction: column;
-    }
-    .logo-text {
-      color: var(--navy);
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: 1.05rem;
-      line-height: 1.1;
-    }
-    .institution-name {
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 500;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .top-bar-cpa {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.7;
-    }
-
-    /* ── Container ── */
-    .questionnaire-container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 3rem;
-    }
-
-    /* ── Header Card ── */
-    .header-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 2rem 2rem 1.75rem;
-      border: 1px solid var(--line);
-      margin-bottom: 1rem;
-    }
-    .header-card h1 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1.65rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin: 0 0 0.85rem;
-      line-height: 1.25;
-    }
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    .badge-segment {
-      background: rgba(20, 52, 92, 0.08);
-      color: var(--navy);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-anonymous {
-      background: rgba(90, 107, 58, 0.1);
-      color: var(--oliva);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-time {
-      background: rgba(107, 100, 80, 0.1);
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── Privacy Notice (ENHANCED) ── */
-    .privacy-notice {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--bordo);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-    }
-    .privacy-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(122, 42, 42, 0.08);
+    .resp-brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: var(--paper-2);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-    }
-    .privacy-icon i {
-      color: var(--bordo);
-      font-size: 1.15rem;
-    }
-    .privacy-content h4 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin: 0 0 0.3rem;
-    }
-    .privacy-content p {
-      margin: 0;
-      font-size: 0.84rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .privacy-content strong {
-      color: var(--ink-2);
-    }
-
-    /* ── Progress ── */
-    .progress-section {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      border: 1px solid var(--line);
-      margin-bottom: 1.5rem;
-    }
-    .progress-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.35rem;
-    }
-    .progress-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--navy);
-    }
-    .progress-percent {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--navy);
-    }
-    .progress-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.75rem;
-    }
-    .progress-title {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-    .progress-time {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-      opacity: 0.7;
-    }
-    .progress-bar-track {
-      height: 6px;
-      background: #ebebea;
-      border-radius: 3px;
       overflow: hidden;
     }
-    .progress-bar-fill {
+    .resp-brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .resp-brand-logo .placeholder-initials {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+    .resp-brand-name {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .resp-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--navy);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .resp-progress-bar {
+      height: 3px;
+      background: var(--paper-2);
+    }
+    .resp-progress-fill {
       height: 100%;
       background: var(--navy);
-      border-radius: 3px;
-      transition: width 0.5s ease;
+      transition: width 0.4s ease;
     }
 
-    /* ── Questions ── */
+    /* ── Container ── */
+    .questionnaire-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 2rem;
+    }
+
+    /* ── Privacy (link compacto) ── */
+    .privacy-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--oliva);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      font-family: 'Inter Tight', sans-serif;
+    }
+    .privacy-link i {
+      font-size: 0.85rem;
+    }
+    .privacy-link:hover {
+      text-decoration: underline;
+    }
+    .privacy-detail {
+      display: none;
+      background: rgba(90, 107, 58, 0.06);
+      border: 1px solid rgba(90, 107, 58, 0.15);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .privacy-detail.show {
+      display: block;
+    }
+
+    /* ── Question Cards ── */
     .question-card {
       background: var(--white);
       border-radius: var(--radius);
-      padding: 1.75rem 2rem;
+      padding: 1.5rem 1.5rem;
       border: 1px solid var(--line);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
       transition: border-color 0.2s;
     }
     .question-card:focus-within {
@@ -289,17 +172,16 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.68rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       color: var(--navy-soft);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.3px;
     }
     .question-text {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--ink);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
       line-height: 1.45;
     }
     .question-required {
@@ -307,11 +189,10 @@
       font-weight: 700;
     }
 
-    /* ── Likert Radio Group ── */
+    /* ── Likert — horizontal always ── */
     .likert-group {
       display: flex;
       gap: 0;
-      flex-wrap: wrap;
     }
     .likert-option {
       flex: 1;
@@ -320,20 +201,28 @@
     .likert-option input { display: none; }
     .likert-option label {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 0.7rem 0.4rem;
-      font-size: 0.73rem;
+      padding: 0.65rem 0.25rem;
+      font-size: 0.62rem;
       font-weight: 600;
       color: var(--muted);
       background: #f5f5f3;
       border: 1.5px solid var(--line);
       cursor: pointer;
       transition: all 0.2s;
-      min-height: 56px;
-      line-height: 1.3;
+      min-height: 52px;
+      line-height: 1.25;
       font-family: 'Inter Tight', sans-serif;
+    }
+    .likert-option label .likert-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--ink-2);
     }
     .likert-option:first-child label {
       border-radius: var(--radius) 0 0 var(--radius);
@@ -341,9 +230,15 @@
     .likert-option:last-child label {
       border-radius: 0 var(--radius) var(--radius) 0;
     }
+    .likert-option + .likert-option label {
+      border-left: none;
+    }
     .likert-option label:hover {
       background: rgba(20, 52, 92, 0.05);
       border-color: var(--navy-soft);
+      color: var(--navy);
+    }
+    .likert-option label:hover .likert-number {
       color: var(--navy);
     }
     .likert-option input:checked + label {
@@ -354,24 +249,27 @@
       position: relative;
       z-index: 1;
     }
+    .likert-option input:checked + label .likert-number {
+      color: var(--paper);
+    }
 
     /* ── NPS ── */
     .nps-group {
       display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
+      gap: 0;
+    }
+    .nps-option {
+      flex: 1;
+      min-width: 0;
     }
     .nps-option input { display: none; }
     .nps-option label {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      height: 44px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--muted);
       background: #f5f5f3;
@@ -379,27 +277,36 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+    .nps-option:first-child label {
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .nps-option:last-child label {
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .nps-option + .nps-option label {
+      border-left: none;
+    }
     .nps-option label:hover {
-      border-color: var(--navy-soft);
       background: rgba(20, 52, 92, 0.05);
+      border-color: var(--navy-soft);
       color: var(--navy);
-      transform: scale(1.08);
     }
     .nps-option input:checked + label {
       background: var(--navy);
       border-color: var(--navy);
       color: var(--paper);
-      box-shadow: 0 3px 10px rgba(20, 52, 92, 0.25);
-      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(20, 52, 92, 0.25);
+      position: relative;
+      z-index: 1;
     }
     .nps-labels {
       display: flex;
       justify-content: space-between;
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
     }
     .nps-labels span {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--muted);
       font-weight: 500;
       text-transform: uppercase;
@@ -417,7 +324,7 @@
       color: var(--ink);
       background: #f5f5f3;
       resize: vertical;
-      min-height: 100px;
+      min-height: 90px;
       transition: all 0.2s;
     }
     .open-textarea:focus {
@@ -428,14 +335,14 @@
     }
     .open-textarea::placeholder {
       color: var(--muted);
-      opacity: 0.5;
+      opacity: 0.6;
     }
     .char-counter {
       text-align: right;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--muted);
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
       font-weight: 500;
     }
 
@@ -444,187 +351,151 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
       gap: 1rem;
     }
     .btn-prev {
       background: var(--white);
       color: var(--navy);
-      border: 1.5px solid var(--navy);
-      padding: 0.65rem 1.5rem;
+      border: 1.5px solid var(--line);
+      padding: 0.6rem 1.25rem;
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       border-radius: var(--radius);
       cursor: pointer;
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       font-family: 'Inter Tight', sans-serif;
     }
     .btn-prev:hover {
-      background: rgba(20, 52, 92, 0.04);
+      background: var(--paper);
+      border-color: var(--navy-soft);
     }
     .btn-next {
       background: var(--navy);
       color: var(--paper);
       border: none;
-      padding: 0.65rem 1.75rem;
+      padding: 0.6rem 1.5rem;
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       border-radius: var(--radius);
       cursor: pointer;
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       font-family: 'Inter Tight', sans-serif;
     }
     .btn-next:hover {
       background: var(--ink-2);
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(20, 52, 92, 0.25);
+      box-shadow: 0 4px 14px rgba(20, 52, 92, 0.2);
     }
 
-    /* ── Section Dots ── */
-    .section-dots {
+    /* ── Footer ── */
+    .resp-footer {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem;
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-top: 1.25rem;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      opacity: 0.7;
     }
-    .section-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #d5d5d3;
-      transition: all 0.3s;
-    }
-    .section-dot.completed {
-      background: var(--oliva);
-    }
-    .section-dot.active {
-      background: var(--navy);
-      width: 28px;
-      border-radius: 5px;
+    .resp-footer svg {
+      opacity: 0.5;
     }
 
     /* ── Responsive ── */
     @media (max-width: 576px) {
-      .questionnaire-container { padding: 1rem 0.75rem 2rem; }
-      .header-card { padding: 1.5rem; }
-      .header-card h1 { font-size: 1.3rem; }
-      .question-card { padding: 1.25rem; }
-      .question-text { font-size: 1.05rem; }
-      .likert-group { flex-direction: column; }
+      .questionnaire-container { padding: 1rem 0.75rem 1.5rem; }
+      .question-card { padding: 1.25rem 1rem; }
+      .question-text { font-size: 0.98rem; }
       .likert-option label {
-        border-radius: 0;
-        min-height: auto;
-        padding: 0.6rem 0.75rem;
-        justify-content: flex-start;
+        padding: 0.55rem 0.15rem;
+        font-size: 0.55rem;
+        min-height: 48px;
       }
-      .likert-option:first-child label { border-radius: var(--radius) var(--radius) 0 0; }
-      .likert-option:last-child label { border-radius: 0 0 var(--radius) var(--radius); }
-      .nps-option label { width: 38px; height: 38px; font-size: 0.78rem; }
-      .nps-group { gap: 4px; }
+      .likert-option label .likert-number {
+        font-size: 0.78rem;
+      }
+      .nps-option label {
+        height: 38px;
+        font-size: 0.7rem;
+      }
       .nav-footer { flex-direction: column; }
       .btn-prev, .btn-next { width: 100%; justify-content: center; }
-      .top-bar-cpa { display: none; }
+      .resp-brand-name { font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="inner">
-      <div class="logo-area">
-        <svg class="logo-selo-small" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="64" height="64" rx="10" fill="#14345c"/>
-          <text x="32" y="42" font-family="Georgia, 'Instrument Serif', serif" font-size="26" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
-          <line x1="22" y1="47" x2="42" y2="47" stroke="#7a2a2a" stroke-width="1.2"/>
-        </svg>
-        <div class="logo-text-group">
-          <div class="logo-text">CPA</div>
-          <div class="institution-name">Faculdade Exemplo</div>
+  <!-- Sticky Header (fino) — IES grande, CPA pequeno -->
+  <header class="resp-header">
+    <div class="resp-header-inner">
+      <div class="resp-brand">
+        <div class="resp-brand-logo">
+          <span class="placeholder-initials">FE</span>
         </div>
+        <span class="resp-brand-name">Faculdade Exemplo</span>
       </div>
-      <div class="top-bar-right">
-        <span class="top-bar-cpa">Comissão Própria de Avaliação</span>
-      </div>
+      <span class="resp-counter">4 / 15</span>
     </div>
-  </div>
+    <div class="resp-progress-bar">
+      <div class="resp-progress-fill" style="width: 26.7%"></div>
+    </div>
+  </header>
 
-  <!-- Questionnaire Container -->
+  <!-- Questionnaire -->
   <div class="questionnaire-container">
 
-    <!-- Header Card -->
-    <div class="header-card">
-      <h1>Avaliação Institucional 2024–2026</h1>
-      <div class="badge-row">
-        <span class="badge-segment"><i class="bi bi-mortarboard-fill"></i> Discentes</span>
-        <span class="badge-anonymous"><i class="bi bi-shield-check"></i> Anônimo</span>
-        <span class="badge-time"><i class="bi bi-clock"></i> ~8 min</span>
-      </div>
-    </div>
-
-    <!-- Privacy Notice (Enhanced) -->
-    <div class="privacy-notice">
-      <div class="privacy-icon">
-        <i class="bi bi-shield-lock-fill"></i>
-      </div>
-      <div class="privacy-content">
-        <h4>Suas respostas são completamente anônimas</h4>
-        <p>Nenhum dado pessoal será coletado ou vinculado às suas respostas. <strong>Não registramos IP, navegador ou qualquer informação identificável.</strong> Sua participação é fundamental para a melhoria contínua da instituição.</p>
-      </div>
-    </div>
-
-    <!-- Progress -->
-    <div class="progress-section">
-      <div class="progress-top">
-        <span class="progress-label">Questão 4 de 15</span>
-        <span class="progress-percent">40%</span>
-      </div>
-      <div class="progress-meta">
-        <span class="progress-title">Eixo 2: Desenvolvimento Institucional</span>
-        <span class="progress-time">~5 min restantes</span>
-      </div>
-      <div class="progress-bar-track">
-        <div class="progress-bar-fill" style="width: 40%"></div>
-      </div>
+    <!-- Privacy (link compacto, expandível) -->
+    <button class="privacy-link" onclick="document.getElementById('privacyDetail').classList.toggle('show')">
+      <i class="bi bi-shield-check"></i> Suas respostas são anônimas <i class="bi bi-chevron-down" style="font-size:0.65rem"></i>
+    </button>
+    <div class="privacy-detail" id="privacyDetail">
+      Nenhum dado pessoal é coletado ou vinculado às suas respostas. Não registramos IP, navegador ou qualquer informação identificável. Apenas o segmento (ex: discente) é registrado para fins estatísticos. Sua participação é fundamental para a melhoria da instituição.
     </div>
 
     <!-- Question 1: Likert -->
     <div class="question-card">
-      <div class="question-number">Questão IV</div>
+      <div class="question-number">4 / 15</div>
       <div class="question-text">A missão da instituição é clara e reflete seus objetivos educacionais? <span class="question-required">*</span></div>
       <div class="likert-group">
         <div class="likert-option">
           <input type="radio" name="q4" id="q4_1" value="1">
-          <label for="q4_1">Discordo Totalmente</label>
+          <label for="q4_1"><span class="likert-number">1</span>Discordo totalmente</label>
         </div>
         <div class="likert-option">
           <input type="radio" name="q4" id="q4_2" value="2">
-          <label for="q4_2">Discordo</label>
+          <label for="q4_2"><span class="likert-number">2</span>Discordo</label>
         </div>
         <div class="likert-option">
           <input type="radio" name="q4" id="q4_3" value="3">
-          <label for="q4_3">Neutro</label>
+          <label for="q4_3"><span class="likert-number">3</span>Neutro</label>
         </div>
         <div class="likert-option">
           <input type="radio" name="q4" id="q4_4" value="4">
-          <label for="q4_4">Concordo</label>
+          <label for="q4_4"><span class="likert-number">4</span>Concordo</label>
         </div>
         <div class="likert-option">
           <input type="radio" name="q4" id="q4_5" value="5" checked>
-          <label for="q4_5">Concordo Totalmente</label>
+          <label for="q4_5"><span class="likert-number">5</span>Concordo totalmente</label>
         </div>
       </div>
     </div>
 
-    <!-- Question 2: NPS -->
+    <!-- Question 2: NPS (horizontal segmented) -->
     <div class="question-card">
-      <div class="question-number">Questão V</div>
+      <div class="question-number">5 / 15</div>
       <div class="question-text">Como você avalia a infraestrutura dos laboratórios? <span class="question-required">*</span></div>
       <div class="nps-group">
         <div class="nps-option">
@@ -680,32 +551,29 @@
 
     <!-- Question 3: Open Text -->
     <div class="question-card">
-      <div class="question-number">Questão VI</div>
+      <div class="question-number">6 / 15</div>
       <div class="question-text">Sugestões para melhoria:</div>
       <textarea class="open-textarea" id="q6_textarea" maxlength="1000" placeholder="Escreva suas sugestões aqui..."></textarea>
-      <div class="char-counter"><span id="charCount">0</span> / 1.000 caracteres</div>
+      <div class="char-counter"><span id="charCount">0</span> / 1.000</div>
     </div>
 
     <!-- Navigation -->
     <div class="nav-footer">
       <button class="btn-prev"><i class="bi bi-arrow-left"></i> Anterior</button>
-      <button class="btn-next">Próxima Seção <i class="bi bi-arrow-right"></i></button>
+      <button class="btn-next">Próxima seção <i class="bi bi-arrow-right"></i></button>
     </div>
-
-    <!-- Section Dots -->
-    <div class="section-dots">
-      <div class="section-dot completed"></div>
-      <div class="section-dot active"></div>
-      <div class="section-dot"></div>
-      <div class="section-dot"></div>
-      <div class="section-dot"></div>
-    </div>
-
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Footer discreto — Powered by -->
+  <div class="resp-footer">
+    <svg viewBox="0 0 64 64" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="10" fill="#14345c"/>
+      <text x="32" y="42" font-family="Georgia,serif" font-size="26" font-weight="400" text-anchor="middle" fill="#f3efe4" letter-spacing="-1">CPA</text>
+    </svg>
+    Powered by CPA Digital
+  </div>
+
   <script>
-    // Character counter
     const textarea = document.getElementById('q6_textarea');
     const charCount = document.getElementById('charCount');
     textarea.addEventListener('input', function() {
